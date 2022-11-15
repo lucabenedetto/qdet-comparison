@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pandas as pd
 import os
 from collections import defaultdict
@@ -55,3 +57,19 @@ def prepare_and_return_ca_df(data_dir: str) -> pd.DataFrame:
     #     DIFFICULTY,  # TODO
 
     return questions_df
+
+
+def calibrate_questions(
+        interactions_filepath: str,
+        train_dev_test_split: Tuple[float, float, float],
+        question_count_threshold: int = 0,
+):
+    # read df
+
+    # remove duplicates
+    # keep only completed sessions
+
+    # calibrate items with IRT
+    # split them
+    # save calibrated items
+    pass

@@ -1,11 +1,3 @@
-# questions text
-# description,id
-# "<p>If you have restricted your server content to a country, which of the following HTTP error codes does a user outside the specified country receive when he tries to access and see your content?</p>",2131
-
-# answers text
-# correct,description,id,question_id
-# True,HTTP status code 403,1,2131
-
 import pandas as pd
 import os
 from collections import defaultdict
@@ -20,6 +12,7 @@ from src.data_utils.constants import (
     Q_ID,
     SPLIT,
     DIFFICULTY,
+    CORRECT_ANSWERS_LIST,
 )
 
 
@@ -42,23 +35,22 @@ def prepare_and_return_ca_df(data_dir: str) -> pd.DataFrame:
         if correct:
             correct_choices[question_id].append(idx)
         idx += 1
-        # todo: with this approach I consider 0 as the first element in the list !
-        #  ^ I have to make this consistent with the other datasets
+        # with this approach I consider 0 as the first element in the list !
 
     questions_df = pd.read_csv(os.path.join(data_dir, 'questions_texts.csv'))
     questions_df = questions_df.rename(columns={'description': QUESTION, 'id': Q_ID})
+
     # kept just for consistency with the race dataset
     questions_df[CONTEXT] = ''
     questions_df[CONTEXT_ID] = ''
-    questions_df[CORRECT_ANSWER] = questions_df.apply(lambda r: tuple(correct_choices[r[Q_ID]]), axis=1)  # what if missing ? It could also be more than one
+
+    questions_df[CORRECT_ANSWERS_LIST] = questions_df.apply(lambda r: tuple(correct_choices[r[Q_ID]]), axis=1)
+    questions_df[CORRECT_ANSWER] = questions_df.apply(
+        lambda r: r[CORRECT_ANSWERS_LIST][0] if len(r[CORRECT_ANSWERS_LIST]) == 1 else None,
+        axis=1
+    )
     questions_df[OPTIONS] = questions_df.apply(lambda r: qid_to_choices_text_dict[r[Q_ID]], axis=1)
 
-    #     CORRECT_ANSWER,  # TODO
-        #     OPTIONS,
-        #     QUESTION,
-        #     CONTEXT,
-        #     CONTEXT_ID,
-        #     Q_ID,
     #     SPLIT,  # TODO
     #     DIFFICULTY,  # TODO
 

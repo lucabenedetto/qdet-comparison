@@ -1,4 +1,5 @@
 CORRECT_ANSWER = 'correct_answer'
+CORRECT_ANSWERS_LIST = 'correct_answers_list'
 OPTIONS = 'options'
 QUESTION = 'question'
 CONTEXT = 'context'

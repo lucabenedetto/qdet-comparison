@@ -34,7 +34,9 @@ def update_df_with_new_reading_passage(df, reading_passage_data, split, level):
     context_id = reading_passage_data['id']
 
     for idx in range(len(questions)):
-        df = pd.concat([df, pd.DataFrame([{CORRECT_ANSWER: answers[idx],
+        # this is just to check that there are no anomalies
+        assert ord('A') <= ord(answers[idx]) <= ord('Z')
+        df = pd.concat([df, pd.DataFrame([{CORRECT_ANSWER: ord(answers[idx])-ord('A'),  # correct answer is an idx (0 the first element)
                                            OPTIONS: options[idx],
                                            QUESTION: questions[idx],
                                            CONTEXT: article,

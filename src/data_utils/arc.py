@@ -48,6 +48,12 @@ def _prepare_and_return_arc_df(df: pd.DataFrame) -> pd.DataFrame:
             'category': SPLIT,
         }
     )
+    df[CORRECT_ANSWER] = df.apply(
+        lambda r:
+        int(r[CORRECT_ANSWER])-1 if ord('1') <= ord(r[CORRECT_ANSWER]) <= ord('9') else ord(r[CORRECT_ANSWER])-ord('A'),
+        axis=1
+    )
+    # this is to have integer indexes and 0 as first index of the correct choices (in the original dataset it is 1)
     df[SPLIT] = df.apply(lambda r: MAP_TO_PROCESSED_SPLIT_NAMES[r[SPLIT]], axis=1)
 
     df_num = df[(df[QUESTION].str.contains('\(1\) '))

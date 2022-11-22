@@ -2,7 +2,17 @@ import os
 import pandas as pd
 import pickle
 
-from src.constants import DF_COLS
+from src.constants import (
+    DF_COLS,
+    CORRECT_ANSWER,
+    OPTIONS,
+    QUESTION,
+    CONTEXT,
+    CONTEXT_ID,
+    Q_ID,
+    SPLIT,
+    DIFFICULTY,
+)
 
 
 def prepare_assistments_dataset(data_dir: str, output_data_dir: str):
@@ -15,7 +25,7 @@ def prepare_assistments_dataset(data_dir: str, output_data_dir: str):
     in_df = pd.concat([df1, df2], ignore_index=True)
     print("[INFO] input_df len = %d (df1=%d, df2=%d)" % (len(in_df), len(df1), len(df2)))
 
-    difficulty_dict = pickle.load(open(os.path.join(data_dir, 'irt_difficulty_am.p'), 'rb'))['difficulty']
+    difficulty_dict = pickle.load(open(os.path.join(data_dir, 'irt_difficulty_am.p'), 'rb'))[DIFFICULTY]
     print("[INFO] Num items in dictionary = %d" % len(difficulty_dict.keys()))
     in_df = in_df[in_df['question_id'].isin(difficulty_dict.keys())]
 
@@ -37,14 +47,14 @@ def _get_df_single_split(df, difficulty_dict, output_data_dir, split):
     for q_id, q_text in df[['question_id', 'question_text']].values:
         assert q_id in difficulty_dict.keys()
         new_row_df = pd.DataFrame([{
-            'q_id': q_id,
-            'correct_answer': None,
-            'difficulty': difficulty_dict[q_id],
-            'question': q_text,
-            'split': split,
-            'options': None,
-            'context': None,
-            'context_id': None,
+            Q_ID: q_id,
+            CORRECT_ANSWER: None,
+            DIFFICULTY: difficulty_dict[q_id],
+            QUESTION: q_text,
+            SPLIT: split,
+            OPTIONS: None,
+            CONTEXT: None,
+            CONTEXT_ID: None,
         }])
         out_df = pd.concat([out_df, new_row_df], ignore_index=True)
 

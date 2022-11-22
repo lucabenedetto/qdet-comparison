@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import pickle
 
-from src.data_utils.constants import DF_COLS
+from src.constants import DF_COLS
 
 
 def prepare_assistments_dataset(data_dir: str, output_data_dir: str):

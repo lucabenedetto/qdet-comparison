@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-from src.data_utils.constants import (
+from src.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,

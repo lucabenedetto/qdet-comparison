@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from collections import defaultdict
 
-from src.data_utils.constants import (
+from src.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,
@@ -12,8 +12,6 @@ from src.data_utils.constants import (
     CONTEXT,
     CONTEXT_ID,
     Q_ID,
-    SPLIT,
-    DIFFICULTY,
     CORRECT_ANSWERS_LIST,
 )
 

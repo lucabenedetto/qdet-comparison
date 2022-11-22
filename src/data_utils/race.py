@@ -3,7 +3,7 @@ import json
 import os
 from os import listdir
 
-from src.data_utils.constants import (
+from src.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,

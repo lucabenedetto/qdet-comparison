@@ -5,6 +5,10 @@ from src.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,
+    OPTION_0,
+    OPTION_1,
+    OPTION_2,
+    OPTION_3,
     QUESTION,
     CONTEXT,
     CONTEXT_ID,
@@ -61,26 +65,26 @@ def _prepare_and_return_arc_df(df: pd.DataFrame) -> pd.DataFrame:
                 & (df[QUESTION].str.contains('\(3\) '))
                 & (df[QUESTION].str.contains('\(4\) '))
                 & ~(df[QUESTION].str.contains('\(5\) '))].copy()
-    df_num['choices_1'] = df_num.apply(lambda r: r[QUESTION].split('(1) ')[1].split('(2) ')[0], axis=1)
-    df_num['choices_2'] = df_num.apply(lambda r: r[QUESTION].split('(2) ')[1].split('(3) ')[0], axis=1)
-    df_num['choices_3'] = df_num.apply(lambda r: r[QUESTION].split('(3) ')[1].split('(4) ')[0], axis=1)
-    df_num['choices_4'] = df_num.apply(lambda r: r[QUESTION].split('(4) ')[1], axis=1)
-    df_num[OPTIONS] = df_num.apply(lambda r: [r['choices_1'], r['choices_2'], r['choices_3'], r['choices_4']], axis=1)
+    df_num[OPTION_0] = df_num.apply(lambda r: r[QUESTION].split('(1) ')[1].split('(2) ')[0], axis=1)
+    df_num[OPTION_1] = df_num.apply(lambda r: r[QUESTION].split('(2) ')[1].split('(3) ')[0], axis=1)
+    df_num[OPTION_2] = df_num.apply(lambda r: r[QUESTION].split('(3) ')[1].split('(4) ')[0], axis=1)
+    df_num[OPTION_3] = df_num.apply(lambda r: r[QUESTION].split('(4) ')[1], axis=1)
+    df_num[OPTIONS] = df_num.apply(lambda r: [r[OPTION_0], r[OPTION_1], r[OPTION_2], r[OPTION_3]], axis=1)
     df_num[QUESTION] = df_num.apply(lambda r: r[QUESTION].split(' (1) ')[0], axis=1)
-    df_num = df_num.drop(['choices_1', 'choices_2', 'choices_3', 'choices_4'], axis=1)
+    # df_num = df_num.drop([OPTION_0, OPTION_1, OPTION_2, OPTION_3], axis=1)
 
     df_char = df[(df[QUESTION].str.contains('\(A\) '))
                  & (df[QUESTION].str.contains('\(B\) '))
                  & (df[QUESTION].str.contains('\(C\) '))
                  & (df[QUESTION].str.contains('\(D\) '))
                  & ~(df[QUESTION].str.contains('\(E\) '))].copy()
-    df_char['choices_A'] = df_char.apply(lambda r: r[QUESTION].split('(A) ')[1].split('(B) ')[0], axis=1)
-    df_char['choices_B'] = df_char.apply(lambda r: r[QUESTION].split('(B) ')[1].split('(C) ')[0], axis=1)
-    df_char['choices_C'] = df_char.apply(lambda r: r[QUESTION].split('(C) ')[1].split('(D) ')[0], axis=1)
-    df_char['choices_D'] = df_char.apply(lambda r: r[QUESTION].split('(D) ')[1], axis=1)
-    df_char[OPTIONS] = df_char.apply(lambda r: [r['choices_A'], r['choices_B'], r['choices_C'], r['choices_D']], axis=1)
+    df_char[OPTION_0] = df_char.apply(lambda r: r[QUESTION].split('(A) ')[1].split('(B) ')[0], axis=1)
+    df_char[OPTION_1] = df_char.apply(lambda r: r[QUESTION].split('(B) ')[1].split('(C) ')[0], axis=1)
+    df_char[OPTION_2] = df_char.apply(lambda r: r[QUESTION].split('(C) ')[1].split('(D) ')[0], axis=1)
+    df_char[OPTION_3] = df_char.apply(lambda r: r[QUESTION].split('(D) ')[1], axis=1)
+    df_char[OPTIONS] = df_char.apply(lambda r: [r[OPTION_0], r[OPTION_1], r[OPTION_2], r[OPTION_3]], axis=1)
     df_char[QUESTION] = df_char.apply(lambda r: r[QUESTION].split(' (A) ')[0], axis=1)
-    df_char = df_char.drop(['choices_A', 'choices_B', 'choices_C', 'choices_D'], axis=1)
+    # df_char = df_char.drop([OPTION_0, OPTION_1, OPTION_2, OPTION_3], axis=1)
 
     df = pd.concat([df_num, df_char])
 

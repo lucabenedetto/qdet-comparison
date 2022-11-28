@@ -7,6 +7,10 @@ from src.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,
+    OPTION_0,
+    OPTION_1,
+    OPTION_2,
+    OPTION_3,
     QUESTION,
     CONTEXT,
     CONTEXT_ID,
@@ -38,6 +42,10 @@ def update_df_with_new_reading_passage(df, reading_passage_data, split, level):
         assert ord('A') <= ord(answers[idx]) <= ord('Z')
         df = pd.concat([df, pd.DataFrame([{CORRECT_ANSWER: ord(answers[idx])-ord('A'),  # correct answer is an idx (0 the first element)
                                            OPTIONS: options[idx],
+                                           OPTION_0: options[idx][0],
+                                           OPTION_1: options[idx][1],
+                                           OPTION_2: options[idx][2],
+                                           OPTION_3: options[idx][3],
                                            QUESTION: questions[idx],
                                            CONTEXT: article,
                                            CONTEXT_ID: context_id[:-4],

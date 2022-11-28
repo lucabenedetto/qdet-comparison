@@ -51,7 +51,7 @@ def _get_df_single_split(df, difficulty_dict, output_data_dir, split):
     for q_id, q_text in df[['question_id', 'question_text']].values:
         assert q_id in difficulty_dict.keys()
         new_row_df = pd.DataFrame([{
-            Q_ID: q_id,
+            Q_ID: str(q_id),
             CORRECT_ANSWER: None,
             DIFFICULTY: difficulty_dict[q_id],
             QUESTION: q_text,

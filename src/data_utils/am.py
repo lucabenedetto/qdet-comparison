@@ -22,7 +22,13 @@ from src.constants import (
 )
 
 
-def prepare_assistments_dataset(data_dir: str, output_data_dir: str):
+def prepare_assistments_dataset(
+        data_dir: str,
+        output_data_dir: str,
+        random_state: int = 42,
+        train_size: float = 0.6,
+        test_size: float = 0.2,
+):
     df1 = pd.read_csv(os.path.join(data_dir, 'dataset_am_train.csv'))
     df2 = pd.read_csv(os.path.join(data_dir, 'dataset_am_test.csv'))
     # there are some duplicates. Let's remove them
@@ -36,9 +42,9 @@ def prepare_assistments_dataset(data_dir: str, output_data_dir: str):
     print("[INFO] Num items in dictionary = %d" % len(difficulty_dict.keys()))
     in_df = in_df[in_df['question_id'].isin(difficulty_dict.keys())]
 
-    in_df = in_df.sample(frac=1.0, random_state=42)  # TODO make constant the random state
-    train_size = int(0.6 * len(in_df))  # TODO make these coefficients constant
-    test_size = int(0.2 * len(in_df))
+    in_df = in_df.sample(frac=1.0, random_state=random_state)
+    train_size = int(train_size * len(in_df))
+    test_size = int(test_size * len(in_df))
 
     train_df = in_df[:train_size]
     test_df = in_df[train_size:train_size+test_size]

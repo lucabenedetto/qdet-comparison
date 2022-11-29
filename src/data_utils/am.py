@@ -16,6 +16,9 @@ from src.constants import (
     Q_ID,
     SPLIT,
     DIFFICULTY,
+    DEV,
+    TEST,
+    TRAIN,
 )
 
 
@@ -41,9 +44,9 @@ def prepare_assistments_dataset(data_dir: str, output_data_dir: str):
     test_df = in_df[train_size:train_size+test_size]
     dev_df = in_df[train_size+test_size:]
 
-    _get_df_single_split(train_df, difficulty_dict, output_data_dir, 'train')
-    _get_df_single_split(test_df, difficulty_dict, output_data_dir, 'test')
-    _get_df_single_split(dev_df, difficulty_dict, output_data_dir, 'dev')
+    _get_df_single_split(train_df, difficulty_dict, output_data_dir, TRAIN)
+    _get_df_single_split(test_df, difficulty_dict, output_data_dir, TEST)
+    _get_df_single_split(dev_df, difficulty_dict, output_data_dir, DEV)
 
 
 def _get_df_single_split(df, difficulty_dict, output_data_dir, split):

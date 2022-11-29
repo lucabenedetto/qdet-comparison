@@ -15,16 +15,19 @@ from src.constants import (
     Q_ID,
     SPLIT,
     DIFFICULTY,
+    DEV,
+    TEST,
+    TRAIN,
 )
 
-DEV = 'Dev'
-TEST = 'Test'
-TRAIN = 'Train'
-MAP_TO_PROCESSED_SPLIT_NAMES = {DEV: 'dev', TEST: 'test', TRAIN: 'train'}
+ARC_DEV = 'Dev'
+ARC_TEST = 'Test'
+ARC_TRAIN = 'Train'
+MAP_TO_PROCESSED_SPLIT_NAMES = {ARC_DEV: DEV, ARC_TEST: TEST, ARC_TRAIN: TRAIN}
 
 
 def prepare_arc_dataset(arc_data_dir: str, output_data_dir: str):
-    for split in [TRAIN, DEV, TEST]:
+    for split in [ARC_TRAIN, ARC_DEV, ARC_TEST]:
         df_arc = prepare_and_return_arc_df(arc_data_dir, split)
         assert set(df_arc.columns) == set(DF_COLS)
         df_arc.to_csv(os.path.join(output_data_dir, f'arc_{MAP_TO_PROCESSED_SPLIT_NAMES[split]}.csv'), index=False)

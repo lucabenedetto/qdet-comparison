@@ -17,11 +17,11 @@ from src.constants import (
     Q_ID,
     SPLIT,
     DIFFICULTY,
-)
+    DEV,
+    TEST,
+    TRAIN,
 
-DEV = 'dev'
-TEST = 'test'
-TRAIN = 'train'
+)
 
 HIGH = 'high'
 MIDDLE = 'middle'

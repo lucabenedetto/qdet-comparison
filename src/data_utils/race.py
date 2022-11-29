@@ -40,7 +40,7 @@ def update_df_with_new_reading_passage(df, reading_passage_data, split, level):
     for idx in range(len(questions)):
         # this is just to check that there are no anomalies
         assert ord('A') <= ord(answers[idx]) <= ord('Z')
-        df = pd.concat([df, pd.DataFrame([{CORRECT_ANSWER: ord(answers[idx])-ord('A'),  # correct answer is an idx (0 the first element)
+        df = pd.concat([df, pd.DataFrame([{CORRECT_ANSWER: ord(answers[idx])-ord('A'),
                                            OPTIONS: options[idx],
                                            OPTION_0: options[idx][0],
                                            OPTION_1: options[idx][1],

@@ -48,7 +48,7 @@ def _prepare_and_return_arc_df(df: pd.DataFrame) -> pd.DataFrame:
     df = df[['questionID', 'AnswerKey', 'schoolGrade', 'question', 'category']]
     df = df.rename(
         columns={
-            'questionID': Q_ID,  # or should I use originalQuestionID ??
+            'questionID': Q_ID,  # analyze if there is any difference w.r.t. using originalQuestionID
             'AnswerKey': CORRECT_ANSWER,
             'schoolGrade': DIFFICULTY,
             # 'question': QUESTION,  # it already has the right name
@@ -74,7 +74,6 @@ def _prepare_and_return_arc_df(df: pd.DataFrame) -> pd.DataFrame:
     df_num[OPTION_3] = df_num.apply(lambda r: r[QUESTION].split('(4) ')[1], axis=1)
     df_num[OPTIONS] = df_num.apply(lambda r: [r[OPTION_0], r[OPTION_1], r[OPTION_2], r[OPTION_3]], axis=1)
     df_num[QUESTION] = df_num.apply(lambda r: r[QUESTION].split(' (1) ')[0], axis=1)
-    # df_num = df_num.drop([OPTION_0, OPTION_1, OPTION_2, OPTION_3], axis=1)
 
     df_char = df[(df[QUESTION].str.contains('\(A\) '))
                  & (df[QUESTION].str.contains('\(B\) '))
@@ -87,7 +86,6 @@ def _prepare_and_return_arc_df(df: pd.DataFrame) -> pd.DataFrame:
     df_char[OPTION_3] = df_char.apply(lambda r: r[QUESTION].split('(D) ')[1], axis=1)
     df_char[OPTIONS] = df_char.apply(lambda r: [r[OPTION_0], r[OPTION_1], r[OPTION_2], r[OPTION_3]], axis=1)
     df_char[QUESTION] = df_char.apply(lambda r: r[QUESTION].split(' (A) ')[0], axis=1)
-    # df_char = df_char.drop([OPTION_0, OPTION_1, OPTION_2, OPTION_3], axis=1)
 
     df = pd.concat([df_num, df_char])
 

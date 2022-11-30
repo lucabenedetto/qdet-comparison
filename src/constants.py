@@ -1,4 +1,10 @@
 DATA_DIR = 'data/processed'
+OUTPUT_DIR = 'output'
+
+# names of datasets
+RACE_PP = 'race_pp'
+ARC = 'arc'
+AM = 'am'
 
 # name of splits (used in filenames, etc.)
 DEV = 'dev'

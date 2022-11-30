@@ -58,10 +58,9 @@ def get_model_by_root_str_and_dataset(root_string, dataset):
 
 
 def randomized_cv_train(model, df_train, random_seed):
-    model.calibrate_latent_traits(None)  # todo possibly remove
-
-    dict_params = {DIFFICULTY: [{}]}  # todo possibly remove
-    scores = model.randomized_cv_train(dict_params, df_train=df_train, n_iter=50, cv=5, n_jobs=-1, random_state=random_seed)
+    model.calibrate_latent_traits(None)
+    dict_params = {DIFFICULTY: [{}]}  # todo make argument
+    scores = model.randomized_cv_train(dict_params, df_train=df_train, n_iter=50, cv=5, n_jobs=-1, random_state=random_seed)  # TODO pass params
     return scores
 
 

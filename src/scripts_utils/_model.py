@@ -19,38 +19,20 @@ from ._data_collection import get_difficulty_range, get_lts
 
 
 def get_model_by_root_str_and_dataset(root_string, dataset):
-    difficulty_range = get_difficulty_range(dataset)  # todo use dataset for this
-    dict_latent_traits = get_lts(dataset)  # todo use dataset for this
+    difficulty_range = get_difficulty_range(dataset)
+    dict_latent_traits = get_lts(dataset)
+    model = get_model_by_root_string(root_string, difficulty_range, dict_latent_traits)
+    return model
 
-    # todo use root_string for this
+
+def get_model_by_root_string(root_string, difficulty_range, dict_latent_traits):
     model = Text2PropsModel(
         latent_traits_calibrator=KnownParametersCalibrator(dict_latent_traits),
         estimator_from_text=FeatureEngAndRegressionEstimatorFromText(
             {
-                DIFFICULTY:
-                    FeatureEngAndRegressionPipeline(
-                        FeatureEngineeringModule(
-                            [
-                                ReadabilityFeaturesComponent(),
-                                IRFeaturesComponent(
-                                    TfidfVectorizer(
-                                        stop_words='english',
-                                        preprocessor=preproc, min_df=0.1, max_df=1.0, max_features=1394
-                                    ),  # from the R2DE CV training
-                                    concatenate_correct=True,
-                                    concatenate_wrong=True
-                                ),
-                            ], normalize_method=normalize,
-                        ),
-                        RegressionModule(
-                            [
-                                SklearnRegressionComponent(
-                                    LinearRegression(),
-                                    latent_trait_range=difficulty_range
-                                )
-                            ]
-                        )
-                    )
+                DIFFICULTY: FeatureEngAndRegressionPipeline(
+                    FeatureEngineeringModule(get_feature_engineering_components_from_filename(root_string), normalize_method=normalize),
+                    RegressionModule(get_regression_comopnents_from_filename(root_string, difficulty_range)))
             }
         )
     )
@@ -68,3 +50,21 @@ def get_predictions(model, df_train, df_test):
     y_pred_train = model.predict(df_train)[DIFFICULTY]
     y_pred_test = model.predict(df_test)[DIFFICULTY]
     return y_pred_train, y_pred_test
+
+
+def get_feature_engineering_components_from_filename(filename):
+    if filename == 'readability_and_r2de__LR':
+        return [
+            ReadabilityFeaturesComponent(),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=preproc, min_df=0.1, max_df=1.0, max_features=1394),
+                # values above are from the R2DE CV training
+                concatenate_correct=True,
+                concatenate_wrong=True
+            )
+        ]
+
+
+def get_regression_comopnents_from_filename(filename, difficulty_range):
+    if filename == 'readability_and_r2de__LR':
+        return [SklearnRegressionComponent(LinearRegression(), latent_trait_range=difficulty_range)]

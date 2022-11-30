@@ -16,6 +16,7 @@ from text2props.modules.regression.components import SklearnRegressionComponent
 from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as preproc
 
 from ._data_collection import get_difficulty_range, get_latent_traits
+from ..configs import *
 
 
 def get_model_by_config_and_dataset(config, dataset):
@@ -53,7 +54,7 @@ def get_predictions(model, df_train, df_test):
 
 
 def get_feat_eng_components_from_config(config):
-    if config == 'readability_and_r2de__LR':
+    if config == READABILITY_AND_R2DE__LR:
         return [
             ReadabilityFeaturesComponent(),
             IRFeaturesComponent(
@@ -66,5 +67,5 @@ def get_feat_eng_components_from_config(config):
 
 
 def get_regression_components_from_config(config, difficulty_range):
-    if config == 'readability_and_r2de__LR':
+    if config == READABILITY_AND_R2DE__LR:
         return [SklearnRegressionComponent(LinearRegression(), latent_trait_range=difficulty_range)]

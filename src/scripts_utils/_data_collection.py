@@ -22,12 +22,12 @@ def get_dfs(dataset):
     return df_train, df_test
 
 
-def get_lts(dataset):
+def get_latent_traits(dataset):
     return pickle.load(open(os.path.join(DATA_DIR, f't2p_{dataset}_difficulty_dict.p'), "rb"))
 
 
 def get_true_labels(df_train, df_test, dataset):
-    dict_latent_traits = get_lts(dataset)
+    dict_latent_traits = get_latent_traits(dataset)
     y_true_test = [dict_latent_traits[DIFFICULTY][x] for x in df_test[Q_ID].values]
     y_true_train = [dict_latent_traits[DIFFICULTY][x] for x in df_train[Q_ID].values]
     return y_true_train, y_true_test

@@ -15,24 +15,24 @@ from text2props.modules.feature_engineering.utils import vectorizer_text_preproc
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import normalize  # w_normalized = normalize(w, norm='l1', axis=1)
 
-from ._data_collection import get_difficulty_range, get_lts
+from ._data_collection import get_difficulty_range, get_latent_traits
 
 
-def get_model_by_root_str_and_dataset(root_string, dataset):
+def get_model_by_config_and_dataset(config, dataset):
     difficulty_range = get_difficulty_range(dataset)
-    dict_latent_traits = get_lts(dataset)
-    model = get_model_by_root_string(root_string, difficulty_range, dict_latent_traits)
+    dict_latent_traits = get_latent_traits(dataset)
+    model = get_model_by_config(config, difficulty_range, dict_latent_traits)
     return model
 
 
-def get_model_by_root_string(root_string, difficulty_range, dict_latent_traits):
+def get_model_by_config(config, difficulty_range, dict_latent_traits):
     model = Text2PropsModel(
         latent_traits_calibrator=KnownParametersCalibrator(dict_latent_traits),
         estimator_from_text=FeatureEngAndRegressionEstimatorFromText(
             {
                 DIFFICULTY: FeatureEngAndRegressionPipeline(
-                    FeatureEngineeringModule(get_feature_engineering_components_from_filename(root_string), normalize_method=normalize),
-                    RegressionModule(get_regression_comopnents_from_filename(root_string, difficulty_range)))
+                    FeatureEngineeringModule(get_feat_eng_components_from_config(config), normalize_method=normalize),
+                    RegressionModule(get_regression_components_from_config(config, difficulty_range)))
             }
         )
     )
@@ -52,8 +52,8 @@ def get_predictions(model, df_train, df_test):
     return y_pred_train, y_pred_test
 
 
-def get_feature_engineering_components_from_filename(filename):
-    if filename == 'readability_and_r2de__LR':
+def get_feat_eng_components_from_config(config):
+    if config == 'readability_and_r2de__LR':
         return [
             ReadabilityFeaturesComponent(),
             IRFeaturesComponent(
@@ -65,6 +65,6 @@ def get_feature_engineering_components_from_filename(filename):
         ]
 
 
-def get_regression_comopnents_from_filename(filename, difficulty_range):
-    if filename == 'readability_and_r2de__LR':
+def get_regression_components_from_config(config, difficulty_range):
+    if config == 'readability_and_r2de__LR':
         return [SklearnRegressionComponent(LinearRegression(), latent_trait_range=difficulty_range)]

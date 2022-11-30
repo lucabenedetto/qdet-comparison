@@ -1,5 +1,8 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-from text2props.constants import DIFFICULTY, Q_ID
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import normalize  # w_normalized = normalize(w, norm='l1', axis=1)
+
+from text2props.constants import DIFFICULTY
 from text2props.model import Text2PropsModel
 from text2props.modules.estimators_from_text import (
     FeatureEngAndRegressionPipeline,
@@ -11,9 +14,6 @@ from text2props.modules.latent_traits_calibration import KnownParametersCalibrat
 from text2props.modules.regression import RegressionModule
 from text2props.modules.regression.components import SklearnRegressionComponent
 from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as preproc
-
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import normalize  # w_normalized = normalize(w, norm='l1', axis=1)
 
 from ._data_collection import get_difficulty_range, get_latent_traits
 

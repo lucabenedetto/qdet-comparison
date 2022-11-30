@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import pickle
 from text2props.constants import DIFFICULTY, Q_ID
-from src.constants import OUTPUT_DIR, RACE_PP, ARC, AM, DATA_DIR
+from src.constants import RACE_PP, ARC, AM, DATA_DIR
 
 
 def get_difficulty_range(dataset):
@@ -10,10 +10,6 @@ def get_difficulty_range(dataset):
         return -1, 3
     else:
         raise NotImplementedError
-
-
-def get_output_dir(dataset):
-    return os.path.join(OUTPUT_DIR, dataset)
 
 
 def get_dfs(dataset):

@@ -20,7 +20,8 @@ def convert_to_text2props_format_and_store_data(
     out_dict[DIFFICULTY_T2P] = dict()
     for q_id, diff in df[[Q_ID, DIFFICULTY]].values:
         if q_id in out_dict[DIFFICULTY_T2P].keys():
-            raise ValueError("Item already encountered.")
+            print(f"[WARNING] Item {str(q_id)} already seen. It was b={out_dict[DIFFICULTY_T2P][q_id]}, now b={diff}.")
+            continue
         out_dict[DIFFICULTY_T2P][str(q_id)] = float(diff)  # difficulty must be a float, here, even for categorical ones
     pickle.dump(out_dict, open(os.path.join(data_dir, f't2p_{dataset_name}_difficulty_dict.p'), 'wb'))
 

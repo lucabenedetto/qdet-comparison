@@ -75,12 +75,15 @@ def prepare_and_return_race_c_df(data_dir: str, split: str):
 
 
 def prepare_racepp_dataset(race_data_dir, race_c_data_dir, output_data_dir):
+    out_dfs = []
     for split in [TRAIN, DEV, TEST]:
         df_race = prepare_and_return_race_df(data_dir=race_data_dir, split=split)
         df_race_c = prepare_and_return_race_c_df(data_dir=race_c_data_dir, split=split)
         df = pd.concat([df_race, df_race_c])
         assert set(df.columns) == set(DF_COLS)
         df.to_csv(os.path.join(output_data_dir, f'race_pp_{split}.csv'), index=False)
+        out_dfs.append(df.copy())
+    return out_dfs
 
 
 def prepare_race_dataset(race_data_dir, output_data_dir):

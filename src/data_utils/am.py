@@ -50,9 +50,10 @@ def prepare_assistments_dataset(
     test_df = in_df[train_size:train_size+test_size]
     dev_df = in_df[train_size+test_size:]
 
-    _get_df_single_split(train_df, difficulty_dict, output_data_dir, TRAIN)
-    _get_df_single_split(test_df, difficulty_dict, output_data_dir, TEST)
-    _get_df_single_split(dev_df, difficulty_dict, output_data_dir, DEV)
+    df_train = _get_df_single_split(train_df, difficulty_dict, output_data_dir, TRAIN)
+    df_test = _get_df_single_split(test_df, difficulty_dict, output_data_dir, TEST)
+    df_dev = _get_df_single_split(dev_df, difficulty_dict, output_data_dir, DEV)
+    return df_train, df_dev, df_test
 
 
 def _get_df_single_split(df, difficulty_dict, output_data_dir, split):
@@ -77,3 +78,4 @@ def _get_df_single_split(df, difficulty_dict, output_data_dir, split):
 
     assert set(out_df.columns) == set(DF_COLS)
     out_df.to_csv(os.path.join(output_data_dir, f'am_{split}.csv'), index=False)
+    return out_df

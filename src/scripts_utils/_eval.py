@@ -7,14 +7,11 @@ from sklearn.metrics import (
     f1_score,
     mean_absolute_error,
     mean_squared_error,  # both MSE and RMSE
-    median_absolute_error,
     r2_score,
 )
 from scipy.stats import (
     spearmanr,
     pearsonr,  # this only for AM since it assumes a gaussian distribution for both  # can also get the p-value
-    kendalltau,
-    # weightedtau,
 )
 
 F1 = 'f1_score'
@@ -23,12 +20,9 @@ ACC = 'accuracy'
 MAE = 'mean_absolute_error'
 MSE = 'mean_squared_error'
 RMSE = 'root_mean_squared_error'
-MED_AE = 'median_absolute_error'
 R2 = 'r2_score'
 SPEARMAN_R = 'spearman_rho'  # can get p-value
 PEARSON_R = 'pearson_rho'  # only AM
-KENDALL_TAU = 'kendall_tau'  # maybe
-# W_K_TAU = 'weighted_kendall_tau'  # maybe
 
 
 def get_metrics(y_true, y_pred, discrete_regression: bool = False):
@@ -36,12 +30,9 @@ def get_metrics(y_true, y_pred, discrete_regression: bool = False):
     metrics[MAE] = mean_absolute_error(y_true, y_pred)
     metrics[MSE] = mean_squared_error(y_true, y_pred, squared=True)
     metrics[RMSE] = mean_squared_error(y_true, y_pred, squared=False)
-    metrics[MED_AE] = median_absolute_error(y_true, y_pred)
     metrics[R2] = r2_score(y_true, y_pred)
-    metrics[SPEARMAN_R] = spearmanr(y_true, y_pred)
-    metrics[PEARSON_R] = pearsonr(y_true, y_pred)
-    metrics[KENDALL_TAU] = kendalltau(y_true, y_pred)
-    # metrics[W_K_TAU] = weightedtau(y_true, y_pred)  # not for us because "exchanges of high weight are more influential than exchanges of low weight"
+    metrics[SPEARMAN_R] = spearmanr(y_true, y_pred).correlation
+    metrics[PEARSON_R] = pearsonr(y_true, y_pred).statistic
     if discrete_regression:
         metrics[F1] = f1_score(y_true, y_pred, average='weighted')
         metrics[BAL_ACC] = balanced_accuracy_score(y_true, y_pred)
@@ -66,6 +57,6 @@ def evaluate_model(
     for metric in metrics_test.keys():
         metrics_dict['test_' + metric] = metrics_test[metric]
         metrics_dict['train_' + metric] = metrics_train[metric]
-    out_df = pd.DataFrame([{metrics_dict}])
+    out_df = pd.DataFrame([metrics_dict])
     out_df.to_csv(os.path.join(output_dir, 'eval_metrics_' + root_string + '.csv'), index=False)
     print(metrics_dict)

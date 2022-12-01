@@ -29,8 +29,8 @@ def prepare_assistments_dataset(
         train_size: float = 0.6,
         test_size: float = 0.2,
 ):
-    df1 = pd.read_csv(os.path.join(data_dir, 'dataset_am_train.csv'))
-    df2 = pd.read_csv(os.path.join(data_dir, 'dataset_am_test.csv'))
+    df1 = pd.read_csv(os.path.join(data_dir, 'dataset_am_train.csv')).drop_duplicates('question_id')
+    df2 = pd.read_csv(os.path.join(data_dir, 'dataset_am_test.csv')).drop_duplicates('question_id')
     # there are some duplicates. Let's remove them
     df1_items = set(df1['question_id'].unique())
     df2 = df2[~df2['question_id'].isin(df1_items)]

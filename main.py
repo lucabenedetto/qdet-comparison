@@ -14,7 +14,7 @@ from src.constants import DATA_DIR
 
 dataset_name = RACE_PP
 feature_eng_config = READ
-regression_config = RF
+regression_config = LR
 SEED = 42
 
 config = get_config(feature_engineering_config=feature_eng_config, regression_config=regression_config)
@@ -34,7 +34,7 @@ scores = randomized_cv_train(model, dict_params, df_train, SEED)
 pickle.dump(model, open(os.path.join(output_dir, 'model_' + config + '.p'), 'wb'))
 
 # perform predictions and save them
-y_pred_train, y_pred_test = get_predictions(model, df_test, df_train)
+y_pred_train, y_pred_test = get_predictions(model, df_train, df_test)
 pickle.dump(y_pred_test, open(os.path.join(output_dir, 'predictions_test_' + config + '.p'), 'wb'))
 pickle.dump(y_pred_train, open(os.path.join(output_dir, 'predictions_train_' + config + '.p'), 'wb'))
 

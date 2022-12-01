@@ -46,4 +46,5 @@ y_true_train = pickle.load(open(os.path.join(DATA_DIR, f'y_true_train_{dataset_n
 y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset_name}.p'), 'rb'))
 y_true_test = pickle.load(open(os.path.join(DATA_DIR, f'y_true_test_{dataset_name}.p'), 'rb'))
 
-evaluate_model(config, converted_y_pred_test, converted_y_pred_train, y_true_test, y_true_train, output_dir)
+discrete_regression = dataset_name in {RACE_PP, ARC}
+evaluate_model(config, converted_y_pred_test, converted_y_pred_train, y_true_test, y_true_train, output_dir, discrete_regression=discrete_regression)

@@ -4,7 +4,7 @@ from src.data_utils.arc import prepare_arc_dataset
 from src.data_utils.am import prepare_assistments_dataset
 from src.data_utils.text2props_mapping import convert_to_text2props_format_and_store_data
 
-# # RACE++
+# RACE++
 print("DOING RACE++")
 race_data_dir = 'data/raw/RACE'
 race_c_data_dir = 'data/raw/race-c-master/data'

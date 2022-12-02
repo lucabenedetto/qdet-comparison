@@ -37,6 +37,10 @@ def get_metrics(y_true, y_pred, discrete_regression: bool = False):
         metrics[F1] = f1_score(y_true, y_pred, average='weighted')
         metrics[BAL_ACC] = balanced_accuracy_score(y_true, y_pred)
         metrics[ACC] = accuracy_score(y_true, y_pred)
+    else:
+        metrics[F1] = None
+        metrics[BAL_ACC] = None
+        metrics[ACC] = None
     return metrics
 
 

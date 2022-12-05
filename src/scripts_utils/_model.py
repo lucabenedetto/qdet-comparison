@@ -38,9 +38,9 @@ def get_model_by_config(config, difficulty_range, dict_latent_traits, seed):
     return model
 
 
-def randomized_cv_train(model, dict_params, df_train, random_seed, n_iter=20):
+def randomized_cv_train(model, dict_params, df_train, random_seed, n_iter=20, n_jobs=-1):
     model.calibrate_latent_traits(None)
-    scores = model.randomized_cv_train(dict_params, df_train=df_train, n_iter=n_iter, cv=5, n_jobs=-1, random_state=random_seed)  # TODO pass params
+    scores = model.randomized_cv_train(dict_params, df_train=df_train, n_iter=n_iter, cv=5, n_jobs=n_jobs, random_state=random_seed)  # TODO pass params
     return scores
 
 

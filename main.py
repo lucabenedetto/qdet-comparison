@@ -19,6 +19,7 @@ regression_config = LR
 # done (with RF): []
 random_seeds = [4]  # [0, 1, 2, 3, 4]
 N_ITER = 20
+N_JOBS = 10
 
 for feature_eng_config in list_feature_eng_configs:
 
@@ -44,7 +45,7 @@ for feature_eng_config in list_feature_eng_configs:
         model = get_model_by_config_and_dataset(config, dataset_name, random_seed)
 
         # train with randomized CV and save model
-        scores = randomized_cv_train(model, dict_params, df_train, random_seed, n_iter=N_ITER)
+        scores = randomized_cv_train(model, dict_params, df_train, random_seed, n_iter=N_ITER, n_jobs=N_JOBS)
         pickle.dump(model, open(os.path.join(output_dir, 'model_' + config + '.p'), 'wb'))
 
         # perform predictions and save them

@@ -15,7 +15,8 @@ def convert_to_text2props_format_and_store_data(
         dataset_name,
 ):
     df = pd.concat([df_train, df_dev, df_test])
-    assert set(DF_COLS) == set(df.columns)
+    print(DF_COLS, df.columns)
+    assert set(DF_COLS).issubset(set(df.columns))
     out_dict = dict()
     out_dict[DIFFICULTY_T2P] = dict()
     for q_id, diff in df[[Q_ID, DIFFICULTY]].values:
@@ -35,7 +36,7 @@ def convert_to_text2props_format_and_store_data(
 
 
 def get_df_for_text2props(df: pd.DataFrame) -> pd.DataFrame:
-    assert set(DF_COLS) == set(df.columns)
+    assert set(DF_COLS).issubset(set(df.columns))
     df[Q_ID_T2P] = df[Q_ID]
 
     if len(df[df[CONTEXT].isnull()]) == 0:

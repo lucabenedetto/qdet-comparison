@@ -1,4 +1,4 @@
-from src.constants import RACE_PP, ARC, AM
+from src.constants import RACE_PP, ARC, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 
 
 def mapper_race(x):
@@ -11,7 +11,7 @@ def mapper_race(x):
 
 
 def get_mapper(dataset):
-    if dataset == RACE_PP:
+    if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
         return mapper_race
     else:
         raise NotImplementedError

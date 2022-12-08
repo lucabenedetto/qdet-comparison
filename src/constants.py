@@ -3,6 +3,9 @@ OUTPUT_DIR = 'output'
 
 # names of datasets
 RACE_PP = 'race_pp'
+RACE_PP_4K = 'race_pp_4k'
+RACE_PP_8K = 'race_pp_8k'
+RACE_PP_12K = 'race_pp_12k'
 ARC = 'arc'
 AM = 'am'
 

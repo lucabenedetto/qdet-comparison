@@ -12,9 +12,15 @@ def get_difficulty_range(dataset):
         raise NotImplementedError
 
 
-def get_dataframes(dataset):
+def get_dataframes_text2props(dataset):
     df_train = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_train.csv'))
     df_test = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_test.csv'))
+    return df_train, df_test
+
+
+def get_dataframes_r2de(dataset):
+    df_train = pd.read_csv(os.path.join(DATA_DIR, f'r2de_{dataset}_train.csv'))
+    df_test = pd.read_csv(os.path.join(DATA_DIR, f'r2de_{dataset}_test.csv'))
     return df_train, df_test
 
 

@@ -11,7 +11,8 @@ from src.scripts_utils import (
 from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR
 from src.configs import *
 from src.constants import DATA_DIR
-
+import nltk
+nltk.download('averaged_perceptron_tagger')
 
 dataset_name = RACE_PP
 list_feature_eng_configs = [W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ONLY]

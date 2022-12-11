@@ -17,40 +17,46 @@ from ._data_collection import get_difficulty_range, get_dict_latent_traits
 from ..configs import *
 
 
-def get_model_by_config_and_dataset(config, dataset, random_seed):
+def get_text2props_model_by_config_and_dataset(config, dataset, random_seed):
     difficulty_range = get_difficulty_range(dataset)
     dict_latent_traits = get_dict_latent_traits(dataset)
-    model = get_model_by_config(config, difficulty_range, dict_latent_traits, random_seed)
+    model = get_text2props_model_by_config(config, difficulty_range, dict_latent_traits, random_seed)
     return model
 
 
-def get_model_by_config(config, difficulty_range, dict_latent_traits, seed):
+def get_text2props_model_by_config(config, difficulty_range, dict_latent_traits, seed):
     model = Text2PropsModel(
         latent_traits_calibrator=KnownParametersCalibrator(dict_latent_traits),
         estimator_from_text=FeatureEngAndRegressionEstimatorFromText(
             {
                 DIFFICULTY: FeatureEngAndRegressionPipeline(
-                    FeatureEngineeringModule(get_feat_eng_components_from_config(config, seed), normalize_method=normalize),
-                    RegressionModule(get_regression_components_from_config(config, difficulty_range, seed)))
+                    FeatureEngineeringModule(get_text2props_feat_eng_components_from_config(config, seed), normalize_method=normalize),
+                    RegressionModule(get_text2props_regression_components_from_config(config, difficulty_range, seed)))
             }
         )
     )
     return model
 
 
-def randomized_cv_train(model, dict_params, df_train, random_seed, n_iter=20, n_jobs=-1):
+def text2props_randomized_cv_train(model: Text2PropsModel, dict_params, df_train, random_seed, n_iter=20, n_jobs=-1):
     model.calibrate_latent_traits(None)
     scores = model.randomized_cv_train(dict_params, df_train=df_train, n_iter=n_iter, cv=5, n_jobs=n_jobs, random_state=random_seed)  # TODO pass params
     return scores
 
 
-def get_predictions(model, df_train, df_test):
+def get_predictions_text2props(model, df_train, df_test):
     y_pred_train = model.predict(df_train)[DIFFICULTY]
     y_pred_test = model.predict(df_test)[DIFFICULTY]
     return y_pred_train, y_pred_test
 
 
-def get_feat_eng_components_from_config(config, seed):
+def get_predictions_r2de(model, x_train, x_test):
+    y_pred_train = model.predict(x_train)
+    y_pred_test = model.predict(x_test)
+    return y_pred_train, y_pred_test
+
+
+def get_text2props_feat_eng_components_from_config(config, seed):
     # TODO:
     #   - [?] make the size of the Word2VecFeaturesComponent an argument
     #   - all the models that use R2DE
@@ -95,7 +101,7 @@ def get_feat_eng_components_from_config(config, seed):
     #     ]
 
 
-def get_regression_components_from_config(config, difficulty_range, seed):
+def get_text2props_regression_components_from_config(config, difficulty_range, seed):
     regression_config = config.split('__')[1]
     if regression_config == LR:
         return [SklearnRegressionComponent(LinearRegression(), latent_trait_range=difficulty_range)]

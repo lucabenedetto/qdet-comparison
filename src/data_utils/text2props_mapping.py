@@ -15,7 +15,6 @@ def convert_to_text2props_format_and_store_data(
         dataset_name,
 ):
     df = pd.concat([df_train, df_dev, df_test])
-    print(DF_COLS, df.columns)
     assert set(DF_COLS).issubset(set(df.columns))
     out_dict = dict()
     out_dict[DIFFICULTY_T2P] = dict()

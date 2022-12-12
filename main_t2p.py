@@ -59,5 +59,6 @@ for dataset_name in LIST_DATASET_NAMES:
             converted_y_pred_test = [my_mapper(x) for x in y_pred_test]
             converted_y_pred_train = [my_mapper(x) for x in y_pred_train]
 
-            evaluate_model(config, converted_y_pred_test, converted_y_pred_train, y_true_test, y_true_train,
-                           output_dir, discrete_regression=discrete_regression)
+            evaluate_model(root_string=config, y_pred_test=converted_y_pred_test, y_pred_train=converted_y_pred_train,
+                           y_true_test=y_true_test, y_true_train=y_true_train,
+                           output_dir=output_dir, discrete_regression=discrete_regression)

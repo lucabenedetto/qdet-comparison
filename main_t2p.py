@@ -1,5 +1,7 @@
+import nltk
 import os
 import pickle
+
 from src.scripts_utils import (
     get_dataframes_text2props,
     get_mapper,
@@ -10,7 +12,7 @@ from src.scripts_utils import (
 )
 from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.configs import *
-import nltk
+
 nltk.download('averaged_perceptron_tagger')
 
 list_dataset_names = [RACE_PP]

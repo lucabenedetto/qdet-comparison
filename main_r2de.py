@@ -1,7 +1,7 @@
 import os
-from sklearn.model_selection import RandomizedSearchCV
 import pickle
 from scipy.stats import randint
+from sklearn.model_selection import RandomizedSearchCV
 
 from r2de.encoding import get_encoded_texts
 from r2de.model import get_model

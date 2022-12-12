@@ -10,19 +10,35 @@ def mapper_race(x):
         return 2
 
 
-def mapper_arc_without_balancing(x):
-    if x <= 3:
+def mapper_arc_without_grouping(x):
+    if x < 3.5:
         return 3
-    elif x >= 9:
+    elif x >= 8.5:
         return 9
     else:
         return round(x)
 
 
-def get_mapper(dataset: str, balancing: bool = False):
+def mapper_arc_with_grouping(x):
+    if x < 4.5:
+        return 3
+    elif x < 5.5:
+        return 5
+    elif x < 7.5:
+        return 7
+    elif x < 8.5:
+        return 8
+    else:
+        return 9
+# 3 & 4 - 115+379=494 | 5 - 690 | 6 & 7 - 99+406 = 505 | 8 - 1375 | 9 - 294
+
+
+def get_mapper(dataset: str, grouping: bool = False):
     if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
         return mapper_race
-    if dataset == ARC and not balancing:
-        return mapper_arc_without_balancing
+    if dataset == ARC and not grouping:
+        return mapper_arc_without_grouping
+    if dataset == ARC and grouping:
+        return mapper_arc_with_grouping
     else:
         raise NotImplementedError

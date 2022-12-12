@@ -8,7 +8,7 @@ from src.scripts_utils import (
     get_predictions_text2props,
     evaluate_model,
 )
-from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR
+from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.configs import *
 from src.constants import DATA_DIR
 import nltk
@@ -17,9 +17,7 @@ nltk.download('averaged_perceptron_tagger')
 dataset_name = RACE_PP
 list_feature_eng_configs = [W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ONLY]
 regression_config = LR
-# done (with LR): [READ, W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ONLY, LING, LING_AND_READ, W2V_Q_ONLY_AND_LING, W2V_Q_CORRECT_AND_LING]
-# done (with RF): [READ]
-random_seeds = [4]  # [0, 1, 2, 3, 4]
+random_seeds = [0, 1, 2, 3, 4]
 N_ITER = 20
 N_JOBS = 10
 
@@ -28,7 +26,7 @@ for feature_eng_config in list_feature_eng_configs:
     # dataset-related variables
     df_train, df_test = get_dataframes_text2props(dataset_name)
     my_mapper = get_mapper(dataset_name)
-    discrete_regression = dataset_name in {RACE_PP, ARC}
+    discrete_regression = dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC}
 
     y_true_train = pickle.load(open(os.path.join(DATA_DIR, f'y_true_train_{dataset_name}.p'), 'rb'))
     y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset_name}.p'), 'rb'))

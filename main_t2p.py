@@ -15,14 +15,14 @@ from src.configs import *
 
 nltk.download('averaged_perceptron_tagger')
 
-list_dataset_names = [RACE_PP]
-list_feature_eng_configs = [W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ONLY]
-regression_config = LR
-random_seeds = [0, 1, 2, 3, 4]
+LIST_DATASET_NAMES = [RACE_PP]
+LIST_FEATURE_ENG_CONFIGS = [W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ONLY]
+REGRESSION_CONFIG = LR
+RANDOM_SEEDS = [0, 1, 2, 3, 4]
 N_ITER = 20
 N_JOBS = 10
 
-for dataset_name in list_dataset_names:
+for dataset_name in LIST_DATASET_NAMES:
 
     # dataset-related variables
     df_train, df_test = get_dataframes_text2props(dataset_name)
@@ -33,13 +33,13 @@ for dataset_name in list_dataset_names:
     y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset_name}.p'), 'rb'))
     y_true_test = pickle.load(open(os.path.join(DATA_DIR, f'y_true_test_{dataset_name}.p'), 'rb'))
 
-    for feature_eng_config in list_feature_eng_configs:
+    for feature_eng_config in LIST_FEATURE_ENG_CONFIGS:
 
         # config-related variables
-        config = get_config(feature_engineering_config=feature_eng_config, regression_config=regression_config)
+        config = get_config(feature_engineering_config=feature_eng_config, regression_config=REGRESSION_CONFIG)
         dict_params = get_dict_params_by_config(config)
 
-        for random_seed in random_seeds:
+        for random_seed in RANDOM_SEEDS:
             print(f' {config} - seed_{random_seed}')
 
             output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(random_seed))

@@ -9,14 +9,14 @@ from r2de.model import get_model
 from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.scripts_utils import get_predictions_r2de, evaluate_model, get_mapper, get_dataframes_r2de
 
-list_dataset_names = [RACE_PP_4K]
+LIST_DATASET_NAMES = [RACE_PP_4K]
 RANDOM_SEEDS = [0, 1, 2, 3, 4]
-list_encoding_idxs = [1, 2]
+LIST_ENCODING_IDX = [1, 2]
 N_ITER = 50
 N_JOBS = -1
 CV = 5
 
-param_distribution = {
+PARAM_DISTRIBUTION = {
     'tfidf__max_features': randint(100, 2000),
     'tfidf__max_df': [0.8, 0.85, 0.9, 0.95, 1.0],
     'tfidf__min_df': [1, 0.05, 0.1, 0.15, 0.2],
@@ -24,7 +24,7 @@ param_distribution = {
     'regressor__n_estimators': randint(2, 200),
 }
 
-for dataset_name in list_dataset_names:
+for dataset_name in LIST_DATASET_NAMES:
 
     df_train, df_test = get_dataframes_r2de(dataset_name)
     my_mapper = get_mapper(dataset_name)
@@ -34,7 +34,7 @@ for dataset_name in list_dataset_names:
     y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset_name}.p'), 'rb'))
     y_true_test = pickle.load(open(os.path.join(DATA_DIR, f'y_true_test_{dataset_name}.p'), 'rb'))
 
-    for encoding_idx in list_encoding_idxs:
+    for encoding_idx in LIST_ENCODING_IDX:
 
         x_train, x_test = get_encoded_texts(encoding_idx, df_train, df_test)
 
@@ -44,7 +44,7 @@ for dataset_name in list_dataset_names:
             output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(random_seed))
 
             model = get_model()
-            random_search = RandomizedSearchCV(model, param_distribution, n_iter=N_ITER, cv=CV, n_jobs=N_JOBS, random_state=random_seed)
+            random_search = RandomizedSearchCV(model, PARAM_DISTRIBUTION, n_iter=N_ITER, cv=CV, n_jobs=N_JOBS, random_state=random_seed)
 
             random_search.fit(x_train, y_true_train)
 

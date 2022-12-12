@@ -6,25 +6,39 @@ from sklearn.model_selection import RandomizedSearchCV
 from r2de.encoding import get_encoded_texts
 from r2de.model import get_model
 
-from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from src.constants import RACE_PP, ARC, ARC_GROUPED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.scripts_utils import get_predictions_r2de, evaluate_model, get_mapper, get_dataframes_r2de
 
-LIST_DATASET_NAMES = [RACE_PP_4K]
+LIST_DATASET_NAMES = [ARC_GROUPED]
 RANDOM_SEEDS = [0, 1, 2, 3, 4]
-LIST_ENCODING_IDX = [1, 2]
+LIST_ENCODING_IDX = [0, 1, 2]
 N_ITER = 50
-N_JOBS = -1
+N_JOBS = 8
 CV = 5
 
-PARAM_DISTRIBUTION = {
+PARAM_DISTRIBUTION_RACE = {
     'tfidf__max_features': randint(100, 2000),
     'tfidf__max_df': [0.8, 0.85, 0.9, 0.95, 1.0],
     'tfidf__min_df': [1, 0.05, 0.1, 0.15, 0.2],
     'regressor__max_depth': randint(2, 50),
     'regressor__n_estimators': randint(2, 200),
 }
+PARAM_DISTRIBUTION_ARC = {
+    'tfidf__max_features': randint(100, 2000),
+    'tfidf__max_df': [0.95, 1.0],
+    'tfidf__min_df': [1, 0.05, 0.1],
+    'regressor__max_depth': randint(2, 50),
+    'regressor__n_estimators': randint(2, 200),
+}
 
-for dataset_name in LIST_DATASET_NAMES:
+PARAM_DISTRIBUTION = PARAM_DISTRIBUTION_ARC
+
+for dataset in LIST_DATASET_NAMES:
+
+    if dataset != ARC_GROUPED:
+        dataset_name = dataset
+    else:
+        dataset_name = ARC
 
     df_train, df_test = get_dataframes_r2de(dataset_name)
     my_mapper = get_mapper(dataset_name)
@@ -39,9 +53,9 @@ for dataset_name in LIST_DATASET_NAMES:
         x_train, x_test = get_encoded_texts(encoding_idx, df_train, df_test)
 
         for random_seed in RANDOM_SEEDS:
-            print(f'{dataset_name} - R2DE - encoding {encoding_idx} - seed_{random_seed}')
+            print(f'{dataset} - R2DE - encoding {encoding_idx} - seed_{random_seed}')
 
-            output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(random_seed))
+            output_dir = os.path.join(OUTPUT_DIR, dataset, 'seed_' + str(random_seed))
 
             model = get_model()
             random_search = RandomizedSearchCV(model, PARAM_DISTRIBUTION, n_iter=N_ITER, cv=CV, n_jobs=N_JOBS, random_state=random_seed)

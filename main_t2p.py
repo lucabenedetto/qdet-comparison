@@ -40,7 +40,7 @@ for dataset_name in LIST_DATASET_NAMES:
         dict_params = get_dict_params_by_config(config)
 
         for random_seed in RANDOM_SEEDS:
-            print(f' {config} - seed_{random_seed}')
+            print(f'{dataset_name} - {config} - seed_{random_seed}')
 
             output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(random_seed))
 

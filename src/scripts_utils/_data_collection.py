@@ -8,6 +8,8 @@ from src.constants import RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, AM,
 def get_difficulty_range(dataset):
     if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
         return -1, 3
+    if dataset in {ARC}:
+        return 3, 9
     else:
         raise NotImplementedError
 

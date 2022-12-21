@@ -22,7 +22,7 @@ def convert_to_r2de_format_and_store_data(
 
 def get_df_for_r2de(df: pd.DataFrame) -> pd.DataFrame:
     assert set(DF_COLS).issubset(set(df.columns))
-    df[Q_ID_R2DE] = df[Q_ID]
+    df[Q_ID_R2DE] = df[Q_ID].astype(str)
 
     if len(df[df[CONTEXT].isnull()]) == 0:
         print("[INFO] All questions in the dataset have a context.")

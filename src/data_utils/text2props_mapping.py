@@ -4,7 +4,7 @@ import pickle
 from text2props.constants import (
     QUESTION_DF_COLS, CORRECT_TEXTS, WRONG_TEXTS, Q_TEXT, Q_ID as Q_ID_T2P, DIFFICULTY as DIFFICULTY_T2P
 )
-from src.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, DIFFICULTY, OPTION_
+from src.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, DIFFICULTY, OPTION_, AM
 
 
 def convert_to_text2props_format_and_store_data(
@@ -36,7 +36,7 @@ def convert_to_text2props_format_and_store_data(
 
 def get_df_for_text2props(df: pd.DataFrame) -> pd.DataFrame:
     assert set(DF_COLS).issubset(set(df.columns))
-    df[Q_ID_T2P] = df[Q_ID]
+    df[Q_ID_T2P] = df[Q_ID].astype(str)
 
     if len(df[df[CONTEXT].isnull()]) == 0:
         print("[INFO] All questions in the dataset have a context.")

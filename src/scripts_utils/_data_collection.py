@@ -10,6 +10,8 @@ def get_difficulty_range(dataset):
         return -1, 3
     if dataset in {ARC}:
         return 3, 9
+    if dataset in {AM}:
+        return -5, +5
     else:
         raise NotImplementedError
 

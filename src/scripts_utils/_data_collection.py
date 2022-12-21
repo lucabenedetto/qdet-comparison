@@ -17,8 +17,8 @@ def get_difficulty_range(dataset):
 
 
 def get_dataframes_text2props(dataset):
-    df_train = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_train.csv'))
-    df_test = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_test.csv'))
+    df_train = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_train.csv'), dtype={Q_ID: str})
+    df_test = pd.read_csv(os.path.join(DATA_DIR, f't2p_{dataset}_test.csv'), dtype={Q_ID: str})
     return df_train, df_test
 
 

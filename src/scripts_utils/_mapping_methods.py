@@ -10,6 +10,10 @@ def mapper_race(x):
         return 2
 
 
+def mapper_am(x):
+    return x
+
+
 def mapper_arc_without_grouping(x):
     if x < 3.5:
         return 3
@@ -40,5 +44,7 @@ def get_mapper(dataset: str, grouping: bool = False):
         return mapper_arc_without_grouping
     if dataset == ARC and grouping:
         return mapper_arc_with_grouping
+    if dataset == AM:
+        return mapper_am
     else:
         raise NotImplementedError

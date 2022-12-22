@@ -5,7 +5,7 @@ import random
 from src.scripts_utils import get_dataframes_text2props, evaluate_model
 from src.constants import RACE_PP, ARC, ARC_GROUPED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 
-LIST_DATASET_NAMES = [AM]  # [RACE_PP, ARC , RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
+LIST_DATASET_NAMES = [AM, RACE_PP, ARC , RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
 
 for dataset_name in LIST_DATASET_NAMES:
 
@@ -20,7 +20,7 @@ for dataset_name in LIST_DATASET_NAMES:
 
     for idx in range(5):
         print(f'{dataset_name} - random_{idx}')
-        output_dir = os.path.join(OUTPUT_DIR, dataset_name)
+        output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(idx))
 
         if discrete_regression:
             true_difficulties = list(set(y_true_train))
@@ -37,6 +37,6 @@ for dataset_name in LIST_DATASET_NAMES:
         pickle.dump(y_pred_test, open(os.path.join(output_dir, f'predictions_test_random_{idx}.p'), 'wb'))
         pickle.dump(y_pred_train, open(os.path.join(output_dir, f'predictions_train_random_{idx}.p'), 'wb'))
 
-        evaluate_model(root_string=f'random_{idx}', y_pred_test=y_pred_test, y_pred_train=y_pred_train,
+        evaluate_model(root_string=f'random', y_pred_test=y_pred_test, y_pred_train=y_pred_train,
                        y_true_test=y_true_test, y_true_train=y_true_train,
                        output_dir=output_dir, discrete_regression=discrete_regression, compute_correlation=True)

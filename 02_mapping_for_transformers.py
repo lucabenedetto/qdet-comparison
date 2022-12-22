@@ -27,38 +27,51 @@ def main_tf():
         print(f"DATASET {dataset}")
         print("doing train")
         out_df_text_difficulty = pd.DataFrame(columns=[DESCRIPTION, QUESTION_ID, DIFFICULTY])
-        for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_train.values:
-            out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
-                out_df_answers_text,
-                out_df_text_difficulty,
-                q_id, question, context, difficulty,
-                correct_ans, option_0, option_1, option_2, option_3,
-            )
+        if dataset in {AM}:
+            for _, _, _, _, _, _, question, context, _, q_id, _, difficulty in df_train.values:
+                out_df_text_difficulty = get_updated_out_df_text_difficulty(out_df_text_difficulty, q_id, question, context, difficulty)
+        else:
+            for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_train.values:
+                out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
+                    out_df_answers_text,
+                    out_df_text_difficulty,
+                    q_id, question, context, difficulty,
+                    correct_ans, option_0, option_1, option_2, option_3,
+                )
         out_df_text_difficulty.to_csv(f'data/processed_for_tf/text_difficulty_{dataset}_train.csv', index=False)
 
         print("doing test")
         out_df_text_difficulty = pd.DataFrame(columns=[DESCRIPTION, QUESTION_ID, DIFFICULTY])
-        for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_test.values:
-            out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
-                out_df_answers_text,
-                out_df_text_difficulty,
-                q_id, question, context, difficulty,
-                correct_ans, option_0, option_1, option_2, option_3,
-            )
+        if dataset in {AM}:
+            for _, _, _, _, _, _, question, context, _, q_id, _, difficulty in df_test.values:
+                out_df_text_difficulty = get_updated_out_df_text_difficulty(out_df_text_difficulty, q_id, question, context, difficulty)
+        else:
+            for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_test.values:
+                out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
+                    out_df_answers_text,
+                    out_df_text_difficulty,
+                    q_id, question, context, difficulty,
+                    correct_ans, option_0, option_1, option_2, option_3,
+                )
         out_df_text_difficulty.to_csv(f'data/processed_for_tf/text_difficulty_{dataset}_test.csv', index=False)
 
         print("doing dev")
         out_df_text_difficulty = pd.DataFrame(columns=[DESCRIPTION, QUESTION_ID, DIFFICULTY])
-        for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_dev.values:
-            out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
-                out_df_answers_text,
-                out_df_text_difficulty,
-                q_id, question, context, difficulty,
-                correct_ans, option_0, option_1, option_2, option_3,
-            )
+        if dataset in {AM}:
+            for _, _, _, _, _, _, question, context, _, q_id, _, difficulty in df_dev.values:
+                out_df_text_difficulty = get_updated_out_df_text_difficulty(out_df_text_difficulty, q_id, question, context, difficulty)
+        else:
+            for correct_ans, _, option_0, option_1, option_2, option_3, question, context, _, q_id, _, difficulty in df_dev.values:
+                out_df_answers_text, out_df_text_difficulty = get_updated_out_df_answers_text_and_out_df_text_difficulty(
+                    out_df_answers_text,
+                    out_df_text_difficulty,
+                    q_id, question, context, difficulty,
+                    correct_ans, option_0, option_1, option_2, option_3,
+                )
         out_df_text_difficulty.to_csv(f'data/processed_for_tf/text_difficulty_{dataset}_dev.csv', index=False)
 
-        out_df_answers_text.to_csv(f'data/processed_for_tf/answers_texts_{dataset}.csv', index=False)
+        if dataset not in {AM}:
+            out_df_answers_text.to_csv(f'data/processed_for_tf/answers_texts_{dataset}.csv', index=False)
 
 
 def get_new_rows_out_df_answers_text(
@@ -113,6 +126,12 @@ def get_updated_out_df_answers_text_and_out_df_text_difficulty(
     new_row_df_text_difficulty = get_new_row_df_text_difficulty(q_id, question, context, difficulty)
     out_df_text_difficulty = pd.concat([out_df_text_difficulty, new_row_df_text_difficulty], ignore_index=True)
     return out_df_answers_text, out_df_text_difficulty
+
+
+def get_updated_out_df_text_difficulty(out_df_text_difficulty, q_id, question, context, difficulty):
+    new_row_df_text_difficulty = get_new_row_df_text_difficulty(q_id, question, context, difficulty)
+    out_df_text_difficulty = pd.concat([out_df_text_difficulty, new_row_df_text_difficulty], ignore_index=True)
+    return out_df_text_difficulty
 
 
 main_tf()

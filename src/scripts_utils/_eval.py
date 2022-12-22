@@ -23,6 +23,7 @@ RMSE = 'root_mean_squared_error'
 R2 = 'r2_score'
 SPEARMAN_R = 'spearman_rho'  # can get p-value
 PEARSON_R = 'pearson_rho'  # only AM
+METRICS = [MAE, MSE, RMSE, R2, SPEARMAN_R, PEARSON_R, F1, BAL_ACC, ACC]
 
 
 def get_metrics(y_true, y_pred, discrete_regression: bool = False, compute_correlation: bool = True):

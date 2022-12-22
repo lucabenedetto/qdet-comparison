@@ -6,6 +6,7 @@ from src.scripts_utils._data_collection import (
     get_dataframes_r2de,
 )
 from src.scripts_utils._eval import evaluate_model
+from src.scripts_utils._eval import METRICS
 from src.scripts_utils._mapping_methods import mapper_race, get_mapper
 from src.scripts_utils._model import (
     get_text2props_model_by_config_and_dataset,

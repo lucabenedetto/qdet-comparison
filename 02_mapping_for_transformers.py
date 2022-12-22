@@ -12,7 +12,7 @@ QUESTION_ID = 'question_id'
 
 
 def main_tf():
-    for dataset in [ARC]:
+    for dataset in [AM]:
 
         df_train = pd.read_csv(os.path.join(DATA_DIR, f'{dataset}_train.csv'))[DF_COLS]
         if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
@@ -100,10 +100,10 @@ def get_new_row_df_text_difficulty(q_id, question, context, difficulty):
 
 
 def get_updated_out_df_answers_text_and_out_df_text_difficulty(
-out_df_answers_text,
-out_df_text_difficulty,
-q_id, question, context, difficulty,
-correct_ans, option_0, option_1, option_2, option_3,
+        out_df_answers_text,
+        out_df_text_difficulty,
+        q_id, question, context, difficulty,
+        correct_ans, option_0, option_1, option_2, option_3,
 ):
     new_rows_df = get_new_rows_out_df_answers_text(correct_ans, q_id, option_0, option_1, option_2, option_3)
     out_df_answers_text = pd.concat(

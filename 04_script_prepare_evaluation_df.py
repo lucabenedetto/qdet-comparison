@@ -105,7 +105,4 @@ def get_dict_results_for_model(dataset, config):
     new_row_dict_test['model'] = config
     return new_row_dict_train, new_row_dict_test
 
-# TODO the evaluation metrics on the train on the transformers are wrong (except where written in purple in the gdoc)!!
-
-
 main()

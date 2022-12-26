@@ -48,7 +48,6 @@ def main():
             output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
             output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
-
         # random
         new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, 'random')
         output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
@@ -104,5 +103,6 @@ def get_dict_results_for_model(dataset, config):
     new_row_dict_train['model'] = config
     new_row_dict_test['model'] = config
     return new_row_dict_train, new_row_dict_test
+
 
 main()

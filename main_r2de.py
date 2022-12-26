@@ -6,10 +6,10 @@ from sklearn.model_selection import RandomizedSearchCV
 from r2de.encoding import get_encoded_texts
 from r2de.model import get_model
 
-from src.constants import RACE_PP, ARC, ARC_GROUPED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.scripts_utils import get_predictions_r2de, evaluate_model, get_mapper, get_dataframes_r2de
 
-LIST_DATASET_NAMES = [ARC_GROUPED]
+LIST_DATASET_NAMES = [RACE_PP, ARC, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
 RANDOM_SEEDS = [0, 1, 2, 3, 4]
 LIST_ENCODING_IDX = [0, 1, 2]
 N_ITER = 50
@@ -35,18 +35,13 @@ PARAM_DISTRIBUTION = PARAM_DISTRIBUTION_ARC
 
 for dataset in LIST_DATASET_NAMES:
 
-    if dataset != ARC_GROUPED:
-        dataset_name = dataset
-    else:
-        dataset_name = ARC
+    df_train, df_test = get_dataframes_r2de(dataset)
+    my_mapper = get_mapper(dataset)
+    discrete_regression = dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC}
 
-    df_train, df_test = get_dataframes_r2de(dataset_name)
-    my_mapper = get_mapper(dataset_name)
-    discrete_regression = dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC}
-
-    y_true_train = pickle.load(open(os.path.join(DATA_DIR, f'y_true_train_{dataset_name}.p'), 'rb'))
-    y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset_name}.p'), 'rb'))
-    y_true_test = pickle.load(open(os.path.join(DATA_DIR, f'y_true_test_{dataset_name}.p'), 'rb'))
+    y_true_train = pickle.load(open(os.path.join(DATA_DIR, f'y_true_train_{dataset}.p'), 'rb'))
+    y_true_dev = pickle.load(open(os.path.join(DATA_DIR, f'y_true_dev_{dataset}.p'), 'rb'))
+    y_true_test = pickle.load(open(os.path.join(DATA_DIR, f'y_true_test_{dataset}.p'), 'rb'))
 
     for encoding_idx in LIST_ENCODING_IDX:
 
@@ -63,7 +58,7 @@ for dataset in LIST_DATASET_NAMES:
             random_search.fit(x_train, y_true_train)
 
             best_model = random_search.best_estimator_
-            best_scores = random_search.best_score_  # TODO check this (whether it is the same meaning as in T2P)
+            best_scores = random_search.best_score_
 
             # save best model
             pickle.dump(best_model, open(os.path.join(output_dir, f'model_r2de_encoding_{encoding_idx}.p'), 'wb'))

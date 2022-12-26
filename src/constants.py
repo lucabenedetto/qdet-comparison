@@ -7,7 +7,6 @@ RACE_PP_4K = 'race_pp_4k'
 RACE_PP_8K = 'race_pp_8k'
 RACE_PP_12K = 'race_pp_12k'
 ARC = 'arc'
-ARC_GROUPED = 'arc_grouped'
 AM = 'am'
 
 # name of splits (used in filenames, etc.)
@@ -34,3 +33,13 @@ DF_COLS = [
     CORRECT_ANSWER, OPTIONS, OPTION_0, OPTION_1, OPTION_2, OPTION_3,
     QUESTION, CONTEXT, CONTEXT_ID, Q_ID, SPLIT, DIFFICULTY
 ]
+
+TF_Q_ONLY = 'question_only'
+TF_Q_CORRECT = 'question_correct'
+TF_Q_ALL = 'question_all'
+
+LIST_TF_ENCODINGS = [TF_Q_ONLY, TF_Q_CORRECT, TF_Q_ALL]
+
+BERT = 'BERT'
+DISTILBERT = 'DistilBERT'
+TF_MODELS = [BERT, DISTILBERT]

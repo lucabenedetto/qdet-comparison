@@ -41,7 +41,13 @@ def main():
             output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         # models implemented with R2DE
-        # todo
+        for encoding in [0, 1, 2]:
+            if encoding != 0 and dataset == AM:
+                continue
+            new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, f'r2de_encoding_{encoding}')
+            output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
+            output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
+
 
         # random
         new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, 'random')

@@ -2,7 +2,7 @@ import numpy as np
 import os
 import pandas as pd
 
-from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 from src.constants import LIST_TF_ENCODINGS, TF_MODELS, TF_Q_ONLY
 from src.configs import *
 from src.scripts_utils import METRICS

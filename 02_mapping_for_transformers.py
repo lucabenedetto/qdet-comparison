@@ -33,9 +33,10 @@ def main_tf():
             df_test = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_test.csv'))[DF_COLS]
             df_dev = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_dev.csv'))[DF_COLS]
 
-        ans_texts_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
         print(f"Doing dataset {dataset_name}")
         skip_ans_texts = dataset_name in {AM}
+
+        ans_texts_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
 
         print("Doing train...")
         text_difficulty_df, ans_texts_df = get_text_difficulty_and_answer_texts(df_train, ans_texts_df, skip_ans_texts)

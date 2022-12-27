@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 from src.constants import DATA_DIR, DEV, TEST, TRAIN
@@ -38,6 +39,9 @@ for diff in range(3, 10):
     else:
         balanced_df_train = pd.concat([balanced_df_train, df_train[df_train['difficulty'] == diff]], ignore_index=True)
 balanced_df_train = balanced_df_train.sample(frac=1.0)
+balanced_df_train.to_csv(os.path.join('data/processed', f'arc_balanced_train.csv'), index=False)
+df_dev.to_csv(os.path.join('data/processed', f'arc_balanced_dev.csv'), index=False)
+df_test.to_csv(os.path.join('data/processed', f'arc_balanced_test.csv'), index=False)
 convert_to_r2de_format_and_store_data(balanced_df_train, df_dev, df_test, DATA_DIR, 'arc_balanced')
 convert_to_text2props_format_and_store_data(balanced_df_train, df_dev, df_test, DATA_DIR, 'arc_balanced')
 

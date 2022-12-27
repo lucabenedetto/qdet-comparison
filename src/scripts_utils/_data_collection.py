@@ -2,13 +2,13 @@ import os
 import pandas as pd
 import pickle
 from text2props.constants import DIFFICULTY, Q_ID
-from src.constants import RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, AM, DATA_DIR
+from src.constants import RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM, DATA_DIR
 
 
 def get_difficulty_range(dataset):
     if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
         return -1, 3
-    if dataset in {ARC}:
+    if dataset in {ARC, ARC_BALANCED}:
         return 3, 9
     if dataset in {AM}:
         return -5, +5

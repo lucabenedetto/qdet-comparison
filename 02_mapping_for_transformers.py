@@ -19,10 +19,12 @@ from src.constants import (
     ANS_ID,
     QUESTION, CONTEXT, Q_ID,
 )
+AS_TYPE_DICT = {CORRECT: bool, DESCRIPTION: str, ANS_ID: str, QUESTION_ID: str}
 
 
 def main_tf():
-    for dataset_name in [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]:
+    # for dataset_name in [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]:
+    for dataset_name in [ARC_BALANCED]:
 
         df_train = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_train.csv'))[DF_COLS]
         if dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
@@ -32,87 +34,54 @@ def main_tf():
             df_test = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_test.csv'))[DF_COLS]
             df_dev = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_dev.csv'))[DF_COLS]
 
-        answers_text_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
-
-        print(f"DATASET {dataset_name}")
+        ans_texts_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
+        print(f"Doing dataset {dataset_name}")
         print("Doing train...")
-        answers_text_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_train, 'train', answers_text_df)
-
+        ans_texts_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_train, 'train', ans_texts_df)
         print("Doing test...")
-        answers_text_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_test, 'test', answers_text_df)
-
+        ans_texts_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_test, 'test', ans_texts_df)
         print("Doing dev...")
-        answers_text_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_dev, 'dev', answers_text_df)
-
+        ans_texts_df = store_text_difficulty_df_and_return_updated_answers_text_df(dataset_name, df_dev, 'dev', ans_texts_df)
         if dataset_name not in {AM}:
-            answers_text_df.to_csv(f'data/processed_for_tf/answers_texts_{dataset_name}.csv', index=False)
+            ans_texts_df.to_csv(os.path.join(DATA_DIR, 'for_tf', 'answers_texts_{dataset_name}.csv'), index=False)
 
 
 def store_text_difficulty_df_and_return_updated_answers_text_df(dataset, df, split, answers_text_df):
     text_difficulty_df = pd.DataFrame(columns=[DESCRIPTION, QUESTION_ID, DIFFICULTY])
     if dataset in {AM}:
         for question, context, q_id, difficulty in df[[QUESTION, CONTEXT, Q_ID, DIFFICULTY]].values:
-            text_difficulty_df = get_updated_text_difficulty_df(text_difficulty_df, q_id, question, context, difficulty)
-    else:
-        for correct_ans, _, opt_0, opt_1, opt_2, opt_3, question, context, _, q_id, _, difficulty in df.values:
-            answers_text_df, text_difficulty_df = get_updated_answers_text_df_and_text_difficulty_df(
-                answers_text_df, text_difficulty_df,
-                q_id, question, context, difficulty, correct_ans, opt_0, opt_1, opt_2, opt_3,
+            text_difficulty_df = pd.concat(
+                [text_difficulty_df, get_new_row_text_difficulty_df(q_id, question, context, difficulty)],
+                ignore_index=True
             )
-    text_difficulty_df.to_csv(f'data/processed_for_tf/text_difficulty_{dataset}_{split}.csv', index=False)
+    else:
+        for correct_option, _, opt0, opt1, opt2, opt3, question, context, _, q_id, _, difficulty in df.values:
+            answers_text_df = pd.concat(
+                [
+                    answers_text_df.astype(AS_TYPE_DICT),
+                    get_new_rows_answers_text_df(correct_option, q_id, [opt0, opt1, opt2, opt3]).astype(AS_TYPE_DICT)
+                ],
+                ignore_index=True
+            )
+            text_difficulty_df = pd.concat(
+                [text_difficulty_df, get_new_row_text_difficulty_df(q_id, question, context, difficulty)],
+                ignore_index=True
+            )
+    text_difficulty_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'text_difficulty_{dataset}_{split}.csv'), index=False)
     return answers_text_df
 
 
-def get_new_rows_answers_text_df(
-        correct_ans,
-        q_id,
-        option_0,
-        option_1,
-        option_2,
-        option_3,
-):
-    out_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, 'id', QUESTION_ID])
-    options = [option_0, option_1, option_2, option_3]
+def get_new_rows_answers_text_df(correct_ans, q_id, options):
+    out_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
     for idx, option in enumerate(options):
         new_row = pd.DataFrame([{CORRECT: idx == correct_ans, DESCRIPTION: option, ANS_ID: idx, QUESTION_ID: q_id}])
-        out_df = pd.concat([out_df.astype({CORRECT: bool, DESCRIPTION: str, ANS_ID: str, QUESTION_ID: str}),
-                            new_row.astype({CORRECT: bool, DESCRIPTION: str, ANS_ID: str, QUESTION_ID: str})],
-                           ignore_index=True)
+        out_df = pd.concat([out_df.astype(AS_TYPE_DICT), new_row.astype(AS_TYPE_DICT)], ignore_index=True)
     return out_df
 
 
 def get_new_row_text_difficulty_df(q_id, question, context, difficulty):
-    if type(context) != str:  # i.e. if it is None
-        context = ''
-    else:
-        context = context + ' '
-    return pd.DataFrame([{
-        DESCRIPTION: context + question,
-        QUESTION_ID: q_id,
-        DIFFICULTY: difficulty,
-    }])
-
-
-def get_updated_answers_text_df_and_text_difficulty_df(
-        out_df_answers_text,
-        out_df_text_difficulty,
-        q_id, question, context, difficulty,
-        correct_ans, option_0, option_1, option_2, option_3,
-):
-    new_rows_df = get_new_rows_answers_text_df(correct_ans, q_id, option_0, option_1, option_2, option_3)
-    out_df_answers_text = pd.concat(
-        [out_df_answers_text.astype({CORRECT: bool, DESCRIPTION: str, 'id': str, QUESTION_ID: str}),
-         new_rows_df.astype({CORRECT: bool, DESCRIPTION: str, 'id': str, QUESTION_ID: str})], ignore_index=True)
-    # get question text (and difficulty)
-    new_row_df_text_difficulty = get_new_row_text_difficulty_df(q_id, question, context, difficulty)
-    out_df_text_difficulty = pd.concat([out_df_text_difficulty, new_row_df_text_difficulty], ignore_index=True)
-    return out_df_answers_text, out_df_text_difficulty
-
-
-def get_updated_text_difficulty_df(out_df_text_difficulty, q_id, question, context, difficulty):
-    new_row_df_text_difficulty = get_new_row_text_difficulty_df(q_id, question, context, difficulty)
-    out_df_text_difficulty = pd.concat([out_df_text_difficulty, new_row_df_text_difficulty], ignore_index=True)
-    return out_df_text_difficulty
+    context = '' if type(context) != str else context + ' '
+    return pd.DataFrame([{DESCRIPTION: context + question, QUESTION_ID: q_id, DIFFICULTY: difficulty,}])
 
 
 main_tf()

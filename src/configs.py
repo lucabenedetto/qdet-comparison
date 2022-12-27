@@ -26,10 +26,10 @@ W2V_Q_ALL = 'w2v_q_all'
 W2V_Q_CORRECT = 'w2v_q_correct'
 # below the hybrid approaches
 LING_AND_READ = 'ling_and_read'
-LING_AND_READ_AND_R2DE = 'ling_and_read_and_r2de'  # todo this needs the R2DE params from the run with only that model
 W2V_Q_ONLY_AND_LING = 'w2v_q_only_and_ling'
 W2V_Q_ALL_AND_LING = 'w2v_q_all_and_ling'
 W2V_Q_CORRECT_AND_LING = 'w2v_q_correct_and_ling'
+LING_AND_READ_AND_R2DE = 'ling_and_read_and_r2de'  # todo this needs the R2DE params from the run with only that model
 W2V_Q_ONLY_AND_LING_AND_R2DE = 'w2v_q_only_and_ling_and_r2de'    # todo this needs the trained R2DE params
 W2V_Q_ALL_AND_LING_AND_R2DE = 'w2v_q_all_and_ling_and_r2de'    # todo this needs the trained R2DE params
 W2V_Q_CORRECT_AND_LING_AND_R2DE = 'w2v_q_correct_and_ling_and_r2de'  # todo this needs the trained R2DE params
@@ -42,12 +42,6 @@ FEATURE_ENGINEERING_CONFIGS = {
 # below not implemented hybrid approaches
 # LING_AND_R2DE = 'ling_and_r2de'
 # READ_AND_R2DE = 'read_and_r2de'
-
-# BASELINES
-# # MAJORITY = 'majority'  # TODO with different code
-# # R2DE_Q_ALL = 'r2de_q_all'    # TODO with different code
-# # R2DE_Q_CORRECT = 'r2de_q_correct'    # TODO with different code
-# # R2DE_Q_ONLY = 'r2de_q_only'    # TODO with different code
 
 # Regression elements
 LR = 'LR'

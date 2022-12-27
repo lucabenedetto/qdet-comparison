@@ -34,24 +34,24 @@ def main_tf():
             df_dev = pd.read_csv(os.path.join(DATA_DIR, f'{dataset_name}_dev.csv'))[DF_COLS]
 
         print(f"Doing dataset {dataset_name}")
-        skip_ans_texts = dataset_name in {AM}
+        skip_answer_texts = dataset_name in {AM}
 
-        ans_texts_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
+        answer_texts_df = pd.DataFrame(columns=[CORRECT, DESCRIPTION, ANS_ID, QUESTION_ID])
 
         print("Doing train...")
-        text_difficulty_df, ans_texts_df = get_text_difficulty_and_answer_texts(df_train, ans_texts_df, skip_ans_texts)
+        text_difficulty_df, answer_texts_df = get_text_difficulty_and_answer_texts(df_train, answer_texts_df, skip_answer_texts)
         text_difficulty_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'text_difficulty_{dataset_name}_train.csv'), index=False)
 
         print("Doing test...")
-        text_difficulty_df, ans_texts_df = get_text_difficulty_and_answer_texts(df_test, ans_texts_df, skip_ans_texts)
+        text_difficulty_df, answer_texts_df = get_text_difficulty_and_answer_texts(df_test, answer_texts_df, skip_answer_texts)
         text_difficulty_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'text_difficulty_{dataset_name}_test.csv'), index=False)
 
         print("Doing dev...")
-        text_difficulty_df, ans_texts_df = get_text_difficulty_and_answer_texts(df_dev, ans_texts_df, skip_ans_texts)
+        text_difficulty_df, answer_texts_df = get_text_difficulty_and_answer_texts(df_dev, answer_texts_df, skip_answer_texts)
         text_difficulty_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'text_difficulty_{dataset_name}_dev.csv'), index=False)
 
-        if not skip_ans_texts:
-            ans_texts_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'answers_texts_{dataset_name}.csv'), index=False)
+        if not skip_answer_texts:
+            answer_texts_df.to_csv(os.path.join(DATA_DIR, 'for_tf', f'answers_texts_{dataset_name}.csv'), index=False)
 
 
 def get_text_difficulty_and_answer_texts(df, answers_text_df, skip_ans_texts):

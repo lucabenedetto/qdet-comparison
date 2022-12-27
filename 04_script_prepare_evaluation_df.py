@@ -59,10 +59,8 @@ def main():
         local_df = pd.read_csv(os.path.join(OUTPUT_DIR, dataset, f'eval_metrics_majority.csv'))
         for metric in METRICS:
             new_row_dict_train[f'train_{metric}_mean'] = local_df[f'train_{metric}'].values[0]
-            # new_row_dict[f'train_{metric}_median'] = local_df[f'train_{metric}'].values[0]
             new_row_dict_train[f'train_{metric}_std'] = np.nan
             new_row_dict_test[f'test_{metric}_mean'] = local_df[f'test_{metric}'].values[0]
-            # new_row_dict[f'test_{metric}_median'] = local_df[f'test_{metric}'].values[0]
             new_row_dict_test[f'test_{metric}_std'] = np.nan
         new_row_dict_train['model'] = 'majority'
         new_row_dict_test['model'] = 'majority'
@@ -93,12 +91,10 @@ def get_dict_results_for_model(dataset, config):
     for metric in METRICS:
         list_train_results = [new_row_dict_train[f'train_seed_{seed}_{metric}'] for seed in RANDOM_SEEDS]
         new_row_dict_train[f'train_{metric}_mean'] = np.mean(list_train_results)
-        # new_row_dict_train[f'train_{metric}_median'] = np.median(list_train_results)
         new_row_dict_train[f'train_{metric}_std'] = np.std(list_train_results)
 
         list_test_results = [new_row_dict_test[f'test_seed_{seed}_{metric}'] for seed in RANDOM_SEEDS]
         new_row_dict_test[f'test_{metric}_mean'] = np.mean(list_test_results)
-        # new_row_dict_test[f'test_{metric}_median'] = np.median(list_test_results)
         new_row_dict_test[f'test_{metric}_std'] = np.std(list_test_results)
     new_row_dict_train['model'] = config
     new_row_dict_test['model'] = config

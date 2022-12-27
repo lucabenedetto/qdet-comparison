@@ -15,7 +15,7 @@ convert_to_r2de_format_and_store_data(dict_out_dfs[-1][TRAIN], dict_out_dfs[-1][
 convert_to_r2de_format_and_store_data(dict_out_dfs[4][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_4k')
 convert_to_r2de_format_and_store_data(dict_out_dfs[8][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_8k')
 convert_to_r2de_format_and_store_data(dict_out_dfs[12][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_12k')
-# converstion to text2props format
+# conversion to text2props format
 convert_to_text2props_format_and_store_data(dict_out_dfs[-1][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp')
 convert_to_text2props_format_and_store_data(dict_out_dfs[4][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_4k')
 convert_to_text2props_format_and_store_data(dict_out_dfs[8][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_8k')

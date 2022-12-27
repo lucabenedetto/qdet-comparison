@@ -5,7 +5,7 @@ import random
 from src.scripts_utils import get_dataframes_text2props, evaluate_model
 from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 
-LIST_DATASET_NAMES = [ARC_BALANCED]  # [AM, RACE_PP, ARC, ARC_BALANCED, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
+LIST_DATASET_NAMES = [AM, RACE_PP, ARC, ARC_BALANCED, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
 
 for dataset_name in LIST_DATASET_NAMES:
 

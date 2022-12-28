@@ -29,15 +29,28 @@ LING_AND_READ = 'ling_and_read'
 W2V_Q_ONLY_AND_LING = 'w2v_q_only_and_ling'
 W2V_Q_ALL_AND_LING = 'w2v_q_all_and_ling'
 W2V_Q_CORRECT_AND_LING = 'w2v_q_correct_and_ling'
-LING_AND_READ_AND_R2DE = 'ling_and_read_and_r2de'  # todo this needs the R2DE params from the run with only that model
-W2V_Q_ONLY_AND_LING_AND_R2DE = 'w2v_q_only_and_ling_and_r2de'    # todo this needs the trained R2DE params
-W2V_Q_ALL_AND_LING_AND_R2DE = 'w2v_q_all_and_ling_and_r2de'    # todo this needs the trained R2DE params
-W2V_Q_CORRECT_AND_LING_AND_R2DE = 'w2v_q_correct_and_ling_and_r2de'  # todo this needs the trained R2DE params
+LING_AND_READ_AND_R2DE_Q_ONLY = 'ling_and_read_and_r2de_q_only'
+LING_AND_READ_AND_R2DE_Q_CORRECT = 'ling_and_read_and_r2de_q_correct'
+LING_AND_READ_AND_R2DE_Q_ALL = 'ling_and_read_and_r2de_q_all_q_all'
+W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY = 'w2v_q_only_and_ling_and_r2de_q_only'
+W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT = 'w2v_q_only_and_ling_and_r2de_q_correct'
+W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ALL = 'w2v_q_only_and_ling_and_r2de_q_all_q_all'
+W2V_Q_ALL_AND_LING_AND_R2DE_Q_ONLY = 'w2v_q_all_and_ling_and_r2de_q_only'
+W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT = 'w2v_q_all_and_ling_and_r2de_q_correct'
+W2V_Q_ALL_AND_LING_AND_R2DE_Q_ALL = 'w2v_q_all_and_ling_and_r2de_q_all_q_all'
+W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ONLY = 'w2v_q_correct_and_ling_and_r2de_q_only'
+W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_CORRECT = 'w2v_q_correct_and_ling_and_r2de_q_correct'
+W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL = 'w2v_q_correct_and_ling_and_r2de_q_all'
 FEATURE_ENGINEERING_CONFIGS = {
-    LING, READ, W2V_Q_ONLY, W2V_Q_ALL, W2V_Q_CORRECT,
-    LING_AND_READ, LING_AND_READ_AND_R2DE,
+    LING,
+    READ,
+    W2V_Q_ONLY, W2V_Q_ALL, W2V_Q_CORRECT,
+    LING_AND_READ,
+    LING_AND_READ_AND_R2DE_Q_ONLY, LING_AND_READ_AND_R2DE_Q_CORRECT, LING_AND_READ_AND_R2DE_Q_ALL,
     W2V_Q_ONLY_AND_LING, W2V_Q_ALL_AND_LING, W2V_Q_CORRECT_AND_LING,
-    W2V_Q_ONLY_AND_LING_AND_R2DE, W2V_Q_ALL_AND_LING_AND_R2DE, W2V_Q_CORRECT_AND_LING_AND_R2DE
+    W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ALL,
+    W2V_Q_ALL_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_ALL_AND_LING_AND_R2DE_Q_ALL,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL,
 }
 # below not implemented hybrid approaches
 # LING_AND_R2DE = 'ling_and_r2de'

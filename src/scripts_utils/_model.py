@@ -1,14 +1,21 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import normalize  # w_normalized = normalize(w, norm='l1', axis=1)
+from sklearn.preprocessing import normalize
 
-# from text2props.constants import DIFFICULTY
 from text2props.model import Text2PropsModel
-from text2props.modules.estimators_from_text import FeatureEngAndRegressionPipeline, FeatureEngAndRegressionEstimatorFromText
+from text2props.modules.estimators_from_text import (
+    FeatureEngAndRegressionPipeline,
+    FeatureEngAndRegressionEstimatorFromText,
+)
 from text2props.modules.feature_engineering import FeatureEngineeringModule
-from text2props.modules.feature_engineering.components import ReadabilityFeaturesComponent, IRFeaturesComponent, LinguisticFeaturesComponent, Word2VecFeaturesComponent
-from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as preproc
+from text2props.modules.feature_engineering.components import (
+    ReadabilityFeaturesComponent,
+    IRFeaturesComponent,
+    LinguisticFeaturesComponent,
+    Word2VecFeaturesComponent,
+)
+from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as prepr
 from text2props.modules.latent_traits_calibration import KnownParametersCalibrator
 from text2props.modules.regression import RegressionModule
 from text2props.modules.regression.components import SklearnRegressionComponent
@@ -57,48 +64,155 @@ def get_predictions_r2de(model, x_train, x_test):
 
 
 def get_text2props_feat_eng_components_from_config(config, seed):
-    # TODO:
-    #   - [?] make the size of the Word2VecFeaturesComponent an argument
-    #   - all the models that use R2DE
-    #   - update the linguistic features component module
+
     feature_engineering_config = config.split('__')[0]
+
     if feature_engineering_config == LING:
         return [LinguisticFeaturesComponent(version=2)]
     if feature_engineering_config == READ:
         return [ReadabilityFeaturesComponent(use_smog=False, version=2)]
+
     if feature_engineering_config == W2V_Q_ONLY:
         return [Word2VecFeaturesComponent(size=100, seed=seed)]
     if feature_engineering_config == W2V_Q_ALL:
         return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed)]
     if feature_engineering_config == W2V_Q_CORRECT:
         return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, seed=seed)]
-    if feature_engineering_config == LING_AND_READ:
-        return [LinguisticFeaturesComponent(version=2), ReadabilityFeaturesComponent(use_smog=False, version=2)]
-    if feature_engineering_config == LING_AND_READ_AND_R2DE:
-        raise NotImplementedError
-    if feature_engineering_config == W2V_Q_ONLY_AND_LING:
-        return [Word2VecFeaturesComponent(size=100, seed=seed), LinguisticFeaturesComponent(version=2)]
-    if feature_engineering_config == W2V_Q_ALL_AND_LING:
-        return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed), LinguisticFeaturesComponent(version=2)]
-    if feature_engineering_config == W2V_Q_CORRECT_AND_LING:
-        return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, seed=seed), LinguisticFeaturesComponent(version=2)]
-    if feature_engineering_config == W2V_Q_ONLY_AND_LING_AND_R2DE:
-        raise NotImplementedError
-    if feature_engineering_config == W2V_Q_ALL_AND_LING_AND_R2DE:
-        raise NotImplementedError
-    if feature_engineering_config == W2V_Q_CORRECT_AND_LING_AND_R2DE:
-        raise NotImplementedError
 
-    # if config.split('__')[0] == READ_AND_R2DE__LR:
-    #     return [
-    #         ReadabilityFeaturesComponent(),
-    #         IRFeaturesComponent(
-    #             TfidfVectorizer(stop_words='english', preprocessor=preproc, min_df=0.1, max_df=1.0, max_features=1394),
-    #             # values above are from the R2DE CV training
-    #             concatenate_correct=True,
-    #             concatenate_wrong=True
-    #         )
-    #     ]
+    if feature_engineering_config == LING_AND_READ:
+        return [LinguisticFeaturesComponent(version=2),
+                ReadabilityFeaturesComponent(use_smog=False, version=2)]
+
+    if feature_engineering_config == W2V_Q_ONLY_AND_LING:
+        return [Word2VecFeaturesComponent(size=100, seed=seed),
+                LinguisticFeaturesComponent(version=2)]
+    if feature_engineering_config == W2V_Q_ALL_AND_LING:
+        return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed),
+                LinguisticFeaturesComponent(version=2)]
+    if feature_engineering_config == W2V_Q_CORRECT_AND_LING:
+        return [Word2VecFeaturesComponent(size=100, concatenate_correct=True, seed=seed),
+                LinguisticFeaturesComponent(version=2)]
+
+    if feature_engineering_config == LING_AND_READ_AND_R2DE_Q_ONLY:
+        return [
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=False,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == LING_AND_READ_AND_R2DE_Q_CORRECT:
+        return [
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == LING_AND_READ_AND_R2DE_Q_ALL:
+        return [
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=True,
+            ),
+        ]
+
+    if feature_engineering_config == W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=False, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=False,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=False, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ALL:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=False, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=True,
+            ),
+        ]
+
+    if feature_engineering_config == W2V_Q_ALL_AND_LING_AND_R2DE_Q_ONLY:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=False,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_ALL_AND_LING_AND_R2DE_Q_ALL:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=True,
+            ),
+        ]
+
+    if feature_engineering_config == W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ONLY:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=False,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_CORRECT:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=False,
+            ),
+        ]
+    if feature_engineering_config == W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL:
+        return [
+            Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=False, seed=seed),
+            LinguisticFeaturesComponent(version=2),
+            IRFeaturesComponent(
+                TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+                concatenate_correct=True,
+                concatenate_wrong=True,
+            ),
+        ]
 
 
 def get_text2props_regression_components_from_config(config, difficulty_range, seed):

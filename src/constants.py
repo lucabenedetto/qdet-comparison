@@ -33,6 +33,7 @@ Q_ID = 'q_id'
 QUESTION_ID = 'question_id'
 SPLIT = 'split'
 DIFFICULTY = 'difficulty'
+PRED_DIFFICULTY = 'predicted_difficulty'
 
 DF_COLS = [
     CORRECT_ANSWER, OPTIONS, OPTION_0, OPTION_1, OPTION_2, OPTION_3,

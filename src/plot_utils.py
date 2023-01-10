@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import seaborn as sns
 
-from src.constants import DIFFICULTY
+from src.constants import DIFFICULTY, PRED_DIFFICULTY
 
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
@@ -37,13 +37,11 @@ def hist_plot_question_distribution_by_difficulty(df: pd.DataFrame, color: str, 
     plt.close(fig)
 
 
-def plot_violinplot_race(df, title, output_filename=None):
-    data = [
-        df[df['difficulty'] == 0]['predicted_difficulty'],
-        df[df['difficulty'] == 1]['predicted_difficulty'],
-        df[df['difficulty'] == 2]['predicted_difficulty']
-    ]
-    m, b = np.polyfit(df['difficulty'], df['predicted_difficulty'], 1)
+def plot_violinplot_race(df: pd.DataFrame, title: str, output_filename: str = None):
+    data = [df[df[DIFFICULTY] == 0][PRED_DIFFICULTY],
+            df[df[DIFFICULTY] == 1][PRED_DIFFICULTY],
+            df[df[DIFFICULTY] == 2][PRED_DIFFICULTY]]
+    m, b = np.polyfit(df[DIFFICULTY], df[PRED_DIFFICULTY], 1)
 
     fig, ax = plt.subplots(figsize=(8, 8))
     sns.violinplot(data, color='#c41331', alpha=0.25)
@@ -58,14 +56,16 @@ def plot_violinplot_race(df, title, output_filename=None):
         ax.plot([x0, x1], [x0*m + b, x1*m + b], c='#c41331', label='linear fit')
         ax.plot([x0, x1], [x0, x1], '--', c='darkred', label='ideal')
     ax.legend()
-    plt.show()
-    # plt.savefig(f'output_figures/distribution_estimated_difficulty_race_pp_{output_filename}.pdf')
-    # plt.close(fig)
+    if output_filename is None:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('output_figures', f'distribution_estimated_difficulty_race_pp_{output_filename}.pdf'))
+    plt.close(fig)
 
 
-def plot_violinplot_arc(df: pd.DataFrame, title: str, output_filename=None):
-    data = [df[df['difficulty'] == int(idx)]['predicted_difficulty'] for idx in range(3, 10)]
-    m, b = np.polyfit(df['difficulty'], df['predicted_difficulty'], 1)
+def plot_violinplot_arc(df: pd.DataFrame, title: str, output_filename: str = None):
+    data = [df[df[DIFFICULTY] == int(idx)][PRED_DIFFICULTY] for idx in range(3, 10)]
+    m, b = np.polyfit(df[DIFFICULTY], df[PRED_DIFFICULTY], 1)
 
     fig, ax = plt.subplots(figsize=(8, 8))
     sns.violinplot(data, color='#223266')
@@ -79,18 +79,19 @@ def plot_violinplot_arc(df: pd.DataFrame, title: str, output_filename=None):
         ax.plot([x0, x1], [x0*m + b, x1*m + b], c='#223266', label='linear fit')
         ax.plot([x0, x1], [x0*m_i + b_i,  x1*m_i + b_i], '--', c='tab:blue', label='ideal')
     ax.legend()
-    plt.show()
-    # plt.savefig(f'output_figures/distribution_estimated_difficulty_arc_{output_filename}.pdf')
-    # plt.close(fig)
+    if output_filename is None:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('output_figures', f'distribution_estimated_difficulty_arc_{output_filename}.pdf'))
+    plt.close(fig)
 
 
-def plot_hexbin_am(df, title, output_filename=None):
-    x = df['difficulty'].values
-    y = df['predicted_difficulty'].values
+def plot_hexbin_am(df: pd.DataFrame, title: str, output_filename: str = None):
+    x = df[DIFFICULTY].values
+    y = df[PRED_DIFFICULTY].values
     m, b = np.polyfit(x, y, 1)
 
     fig, ax = plt.subplots(figsize=(8, 8))
-    # ax.scatter(x, y, alpha=0.2)
     ax.hexbin(x, y, gridsize=(50, 50), cmap='Greens')
 
     x0, x1 = -3, 3
@@ -104,6 +105,8 @@ def plot_hexbin_am(df, title, output_filename=None):
 
     ax.legend()
     ax.set_title(title)
-    plt.show()
-    # plt.savefig(f'output_figures/distribution_estimated_difficulty_am_{output_filename}.pdf')
-    # plt.close(fig)
+    if output_filename is None:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('output_figures', f'distribution_estimated_difficulty_am_{output_filename}.pdf'))
+    plt.close(fig)

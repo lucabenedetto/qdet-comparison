@@ -12,24 +12,28 @@ matplotlib.rcParams['font.family'] = 'STIXGeneral'
 matplotlib.rcParams['font.size'] = 22
 
 
-def bar_plot_question_distribution_by_difficulty(df, color, output_filename):
+def bar_plot_question_distribution_by_difficulty(df: pd.DataFrame, color: str, output_filename: str = None):
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.bar(df[DIFFICULTY], df[0], color=color)
     ax.set_xlabel("Difficulty")
     ax.set_ylabel("N. of questions")
     ax.set_xticks(df[DIFFICULTY])
-    # plt.show()
-    plt.savefig(os.path.join('output_figures', output_filename))
+    if output_filename is None:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('output_figures', output_filename))
     plt.close(fig)
 
 
-def hist_plot_question_distribution_by_difficulty(df, color, output_filename):
+def hist_plot_question_distribution_by_difficulty(df: pd.DataFrame, color: str, output_filename: str = None):
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.hist(df[DIFFICULTY], bins=25, color=color)
     ax.set_xlabel("Difficulty")
     ax.set_ylabel("N. of questions")
-    # plt.show()
-    plt.savefig(os.path.join('output_figures', output_filename))
+    if output_filename is None:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('output_figures', output_filename))
     plt.close(fig)
 
 

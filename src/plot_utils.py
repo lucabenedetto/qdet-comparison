@@ -1,12 +1,36 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 import pandas as pd
 import seaborn as sns
+
+from src.constants import DIFFICULTY
 
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 matplotlib.rcParams['font.size'] = 22
+
+
+def bar_plot_question_distribution_by_difficulty(df, color, output_filename):
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.bar(df[DIFFICULTY], df[0], color=color)
+    ax.set_xlabel("Difficulty")
+    ax.set_ylabel("N. of questions")
+    ax.set_xticks(df[DIFFICULTY])
+    # plt.show()
+    plt.savefig(os.path.join('output_figures', output_filename))
+    plt.close(fig)
+
+
+def hist_plot_question_distribution_by_difficulty(df, color, output_filename):
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.hist(df[DIFFICULTY], bins=25, color=color)
+    ax.set_xlabel("Difficulty")
+    ax.set_ylabel("N. of questions")
+    # plt.show()
+    plt.savefig(os.path.join('output_figures', output_filename))
+    plt.close(fig)
 
 
 def plot_violinplot_race(df, title, output_filename=None):

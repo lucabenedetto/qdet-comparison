@@ -1,17 +1,18 @@
 import os
 import pandas as pd
 
-from src.constants import RACE_PP, ARC, AM, OUTPUT_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
-from src.constants import LIST_TF_ENCODINGS, TF_MODELS, TF_Q_ONLY
+from src.constants import (
+    RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, LIST_TF_ENCODINGS, TF_MODELS, TF_Q_ONLY
+)
 from src.scripts_utils import evaluate_model, get_mapper
 
-LIST_DATASET_NAMES = [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, AM]
+LIST_DATASET_NAMES = [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]
 
 RANDOM_SEEDS = [0, 1, 2, 3, 4]
 
 for dataset_name in LIST_DATASET_NAMES:
 
-    discrete_regression = dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC}
+    discrete_regression = dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED}
     my_mapper = get_mapper(dataset_name)
 
     for model in TF_MODELS:

@@ -50,6 +50,7 @@ def plot_metrics_per_different_sizes(
 
 
 def main():
+    # these results are copied from the file created by the script "get metrics dataframe"
     results_rmse = {LING_RF:        [0.541, 0.539, 0.531, 0.471],
                     W2V_QA:         [0.545, 0.532, 0.528, 0.507],
                     R2DE_QC:        [0.547, 0.555, 0.547, 0.508],

@@ -16,29 +16,28 @@ from src.configs import *
 nltk.download('averaged_perceptron_tagger')
 
 LIST_DATASET_NAMES = [RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
-# LIST_FEATURE_ENG_CONFIGS = [
-#     LING,
-#     READ,
-#     W2V_Q_ONLY,
-#     W2V_Q_ALL,
-#     W2V_Q_CORRECT,
-#     LING_AND_READ,
-#     W2V_Q_ONLY_AND_LING,
-#     W2V_Q_ALL_AND_LING,
-#     W2V_Q_CORRECT_AND_LING,
-#     LING_AND_READ_AND_R2DE_Q_CORRECT,
-#     W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT,
-# ]
-LIST_FEATURE_ENG_CONFIGS = [LING_AND_READ_AND_R2DE_Q_CORRECT, W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT]
-# In the hybrid models for race:
-#     R2DE q_correct
-#     w2v q all
+LIST_FEATURE_ENG_CONFIGS = [
+    LING,
+    READ,
+    W2V_Q_ONLY,
+    W2V_Q_ALL,
+    W2V_Q_CORRECT,
+    LING_AND_READ,
+    W2V_Q_ONLY_AND_LING,
+    W2V_Q_ALL_AND_LING,
+    W2V_Q_CORRECT_AND_LING,
+    LING_AND_READ_AND_R2DE_Q_CORRECT,
+    W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT,
+    LING_AND_READ_AND_R2DE_Q_ALL,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL,
+]
+
 REGRESSION_CONFIG = RF
 RANDOM_SEEDS = [0, 1, 2, 3, 4]
 N_ITER = 20
 N_JOBS = 10
 
-for dataset in [RACE_PP]:
+for dataset in LIST_DATASET_NAMES:
 
     # dataset-related variables
     df_train, df_test = get_dataframes_text2props(dataset)

@@ -8,23 +8,24 @@ from src.configs import *
 from src.scripts_utils import METRICS
 
 
-LIST_DATASET_NAMES = [RACE_PP]  # [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]
+LIST_DATASET_NAMES = [RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
 LIST_FEATURE_ENG_CONFIGS = [
-    # LING,
-    # READ,
-    # W2V_Q_ONLY,
-    # W2V_Q_ALL,
-    # W2V_Q_CORRECT,
-    # LING_AND_READ,
-    # W2V_Q_ONLY_AND_LING,
-    # W2V_Q_ALL_AND_LING,
-    # W2V_Q_CORRECT_AND_LING,
-    # W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY,
-    # LING_AND_READ_AND_R2DE_Q_CORRECT,
-    W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT,
+    LING,
+    READ,
+    W2V_Q_ONLY,
+    W2V_Q_ALL,
+    W2V_Q_CORRECT,
+    LING_AND_READ,
+    W2V_Q_ONLY_AND_LING,
+    W2V_Q_ALL_AND_LING,
+    W2V_Q_CORRECT_AND_LING,
+    LING_AND_READ_AND_R2DE_Q_CORRECT,
+    W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT,
+    LING_AND_READ_AND_R2DE_Q_ALL,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL,
 ]
 REGRESSION_CONFIG = RF
-RANDOM_SEEDS = [0, 1]
+RANDOM_SEEDS = [0, 1, 2, 3, 4]
 
 
 def main():
@@ -44,40 +45,40 @@ def main():
             output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         # models implemented with R2DE
-        # for encoding in [0, 1, 2]:
-        #     if encoding != 0 and dataset == AM:
-        #         continue
-        #     new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, f'r2de_encoding_{encoding}')
-        #     output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
-        #     output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
+        for encoding in [0, 1, 2]:
+            if encoding != 0 and dataset == AM:
+                continue
+            new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, f'r2de_encoding_{encoding}')
+            output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
+            output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         # random
-        # new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, 'random')
-        # output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
-        # output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
+        new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, 'random')
+        output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
+        output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         # majority
-        # new_row_dict_train = {col: None for col in output_df_train.columns}
-        # new_row_dict_test = {col: None for col in output_df_test.columns}
-        # local_df = pd.read_csv(os.path.join(OUTPUT_DIR, dataset, f'eval_metrics_majority.csv'))
-        # for metric in METRICS:
-        #     new_row_dict_train[f'train_{metric}_mean'] = local_df[f'train_{metric}'].values[0]
-        #     new_row_dict_train[f'train_{metric}_std'] = np.nan
-        #     new_row_dict_test[f'test_{metric}_mean'] = local_df[f'test_{metric}'].values[0]
-        #     new_row_dict_test[f'test_{metric}_std'] = np.nan
-        # new_row_dict_train['model'] = 'majority'
-        # new_row_dict_test['model'] = 'majority'
-        # output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
-        # output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
+        new_row_dict_train = {col: None for col in output_df_train.columns}
+        new_row_dict_test = {col: None for col in output_df_test.columns}
+        local_df = pd.read_csv(os.path.join(OUTPUT_DIR, dataset, f'eval_metrics_majority.csv'))
+        for metric in METRICS:
+            new_row_dict_train[f'train_{metric}_mean'] = local_df[f'train_{metric}'].values[0]
+            new_row_dict_train[f'train_{metric}_std'] = np.nan
+            new_row_dict_test[f'test_{metric}_mean'] = local_df[f'test_{metric}'].values[0]
+            new_row_dict_test[f'test_{metric}_std'] = np.nan
+        new_row_dict_train['model'] = 'majority'
+        new_row_dict_test['model'] = 'majority'
+        output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
+        output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         # transformers
-        # for model in TF_MODELS:
-        #     for encoding in LIST_TF_ENCODINGS:
-        #         if encoding != TF_Q_ONLY and dataset == AM:
-        #             continue
-        #         new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, f'{model}_{encoding}')
-        #         output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
-        #         output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
+        for model in TF_MODELS:
+            for encoding in LIST_TF_ENCODINGS:
+                if encoding != TF_Q_ONLY and dataset == AM:
+                    continue
+                new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, f'{model}_{encoding}')
+                output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
+                output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)
 
         output_df_train.to_csv(os.path.join(OUTPUT_DIR, dataset, 'general_evaluation_train.csv'), index=False)
         output_df_test.to_csv(os.path.join(OUTPUT_DIR, dataset, 'general_evaluation_test.csv'), index=False)

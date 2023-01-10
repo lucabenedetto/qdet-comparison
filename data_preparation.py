@@ -5,7 +5,7 @@ from src.constants import DATA_DIR, DEV, TEST, TRAIN
 from src.data_utils.race import prepare_racepp_dataset
 from src.data_utils.arc import prepare_arc_dataset
 from src.data_utils.am import prepare_assistments_dataset
-from src.data_utils.text2props_mapping import convert_to_text2props_format_and_store_data
+from src.data_utils.mapping_text2props import convert_to_text2props_format_and_store_data
 from src.data_utils.mapping_r2de import convert_to_r2de_format_and_store_data
 
 # RACE++

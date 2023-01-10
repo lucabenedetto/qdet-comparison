@@ -9,7 +9,7 @@ from src.constants import DIFFICULTY, PRED_DIFFICULTY
 
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
-matplotlib.rcParams['font.size'] = 22
+matplotlib.rcParams['font.size'] = 24
 
 
 def bar_plot_question_distribution_by_difficulty(df: pd.DataFrame, color: str, output_filename: str = None):

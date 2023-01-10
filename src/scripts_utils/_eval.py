@@ -2,7 +2,6 @@ import os
 import pandas as pd
 from typing import List
 from sklearn.metrics import (
-    accuracy_score,
     balanced_accuracy_score,
     f1_score,
     mean_absolute_error,
@@ -11,25 +10,23 @@ from sklearn.metrics import (
 )
 from scipy.stats import (
     spearmanr,
-    pearsonr,  # this only for AM since it assumes a gaussian distribution for both  # can also get the p-value
+    pearsonr,  # this assumes a gaussian distribution for both true and estimated values
 )
 
-F1 = 'f1_score'
-BAL_ACC = 'balanced_accuracy'
-ACC = 'accuracy'
 MAE = 'mean_absolute_error'
-MSE = 'mean_squared_error'
 RMSE = 'root_mean_squared_error'
 R2 = 'r2_score'
-SPEARMAN_R = 'spearman_rho'  # can get p-value
+SPEARMAN_R = 'spearman_rho'
 PEARSON_R = 'pearson_rho'  # only AM
-METRICS = [MAE, MSE, RMSE, R2, SPEARMAN_R, PEARSON_R, F1, BAL_ACC, ACC]
+F1 = 'f1_score'  # not ideal for QDET (doesn't consider difficulty ranking, only classification results)
+BAL_ACC = 'balanced_accuracy'  # not ideal for QDET (doesn't consider difficulty ranking, only classification results)
+
+METRICS = [MAE, RMSE, R2, SPEARMAN_R, PEARSON_R, F1, BAL_ACC]
 
 
 def get_metrics(y_true, y_pred, discrete_regression: bool = False, compute_correlation: bool = True):
     metrics = dict()
     metrics[MAE] = mean_absolute_error(y_true, y_pred)
-    metrics[MSE] = mean_squared_error(y_true, y_pred, squared=True)
     metrics[RMSE] = mean_squared_error(y_true, y_pred, squared=False)
     metrics[R2] = r2_score(y_true, y_pred)
     if compute_correlation:
@@ -41,11 +38,9 @@ def get_metrics(y_true, y_pred, discrete_regression: bool = False, compute_corre
     if discrete_regression:
         metrics[F1] = f1_score(y_true, y_pred, average='weighted')
         metrics[BAL_ACC] = balanced_accuracy_score(y_true, y_pred)
-        metrics[ACC] = accuracy_score(y_true, y_pred)
     else:
         metrics[F1] = None
         metrics[BAL_ACC] = None
-        metrics[ACC] = None
     return metrics
 
 
@@ -73,4 +68,3 @@ def evaluate_model(
         metrics_dict['train_' + metric] = metrics_train[metric]
     out_df = pd.DataFrame([metrics_dict])
     out_df.to_csv(os.path.join(output_dir, 'eval_metrics_' + root_string + '.csv'), index=False)
-    # print(metrics_dict)

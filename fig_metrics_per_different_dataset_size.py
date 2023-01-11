@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 import matplotlib
 import matplotlib.pyplot as plt
 import os
@@ -19,23 +21,23 @@ X = [0, 1, 2, 3]
 
 
 def plot_metrics_per_different_sizes(
-        mean_metric_dict,
-        std_metric_dict,
-        metric_name,
-        output_filename=None,
+        dict_metrics_mean: Dict[str, List[float]],
+        dict_metrics_std: Dict[str, List[float]],
+        metric_name: str,
+        output_filename: str = None,
 ):
     fig, ax = plt.subplots(figsize=(12, 8))
-    for idx, key in enumerate(mean_metric_dict.keys()):
-        ax.plot(X[:3], mean_metric_dict[key][:3], label=key, c=cs[idx])
-        ax.plot(X[2:], mean_metric_dict[key][2:], '--', c=cs[idx])
+    for idx, key in enumerate(dict_metrics_mean.keys()):
+        ax.plot(X[:3], dict_metrics_mean[key][:3], label=key, c=cs[idx])
+        ax.plot(X[2:], dict_metrics_mean[key][2:], '--', c=cs[idx])
         ax.fill_between(
             X,
-            [mean_metric_dict[key][i]+std_metric_dict[key][i] for i in range(4)],
-            [mean_metric_dict[key][i]-std_metric_dict[key][i] for i in range(4)],
+            [dict_metrics_mean[key][i] + dict_metrics_std[key][i] for i in range(4)],
+            [dict_metrics_mean[key][i] - dict_metrics_std[key][i] for i in range(4)],
             color=cs[idx],
             alpha=0.2
         )
-        ax.scatter(X, mean_metric_dict[key], c=cs[idx])
+        ax.scatter(X, dict_metrics_mean[key], c=cs[idx])
     ax.legend()
     ax.grid(c='k', alpha=0.25)
     ax.set_ylabel(f"{metric_name} ($\mu \pm \sigma$)")

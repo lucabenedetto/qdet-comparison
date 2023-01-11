@@ -42,8 +42,9 @@ def plot_metrics_per_different_sizes(
     ax.grid(c='k', alpha=0.25)
     ax.set_ylabel(f"{metric_name} ($\mu \pm \sigma$)")
     ax.set_xlabel("Dataset size")
-    ax.set_xticks([0, 1, 2, 3])
-    ax.set_xticklabels(['RACE++ 4k', 'RACE++ 8k', 'RACE++ 12k', 'RACE++'])
+    ax.set_xticks(X)
+    # ax.set_xticklabels(['RACE++ 4k', 'RACE++ 8k', 'RACE++ 12k', 'RACE++'])
+    ax.set_xticklabels(['R.4k', 'R.8k', 'R.12k', 'RACE++'])
     if output_filename is not None:
         plt.savefig(os.path.join('output_figures', output_filename))
         plt.close(fig)

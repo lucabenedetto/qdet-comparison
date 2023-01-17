@@ -4,7 +4,7 @@ import pickle
 from text2props.constants import (
     QUESTION_DF_COLS, CORRECT_TEXTS, WRONG_TEXTS, Q_TEXT, Q_ID as Q_ID_T2P, DIFFICULTY as DIFFICULTY_T2P
 )
-from src.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, DIFFICULTY, OPTION_, AM
+from qdet_utils.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, DIFFICULTY, OPTION_, AM
 
 
 def convert_to_text2props_format_and_store_data(

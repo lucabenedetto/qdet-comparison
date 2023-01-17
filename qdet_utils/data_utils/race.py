@@ -3,7 +3,7 @@ import json
 import os
 from os import listdir
 
-from src.constants import (
+from qdet_utils.constants import (
     DF_COLS,
     CORRECT_ANSWER,
     OPTIONS,

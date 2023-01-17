@@ -1,5 +1,5 @@
 import pandas as pd
-from src.constants import (
+from qdet_utils.constants import (
     DIFFICULTY,
     CORRECT,
     DESCRIPTION,

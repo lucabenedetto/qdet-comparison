@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import seaborn as sns
 
-from src.constants import DIFFICULTY, PRED_DIFFICULTY
+from qdet_utils.constants import DIFFICULTY, PRED_DIFFICULTY
 
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'

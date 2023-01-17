@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from src.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, OPTION_
+from qdet_utils.constants import DF_COLS, CORRECT_ANSWER, CONTEXT, QUESTION, Q_ID, OPTION_
 
 CORRECT_TEXTS = 'text_correct_choices'
 WRONG_TEXTS = 'text_wrong_choices'

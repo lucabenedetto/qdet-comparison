@@ -1,4 +1,4 @@
-from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from qdet_utils.constants import RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
 
 
 def mapper_race(x):

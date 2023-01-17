@@ -2,7 +2,7 @@ import nltk
 import os
 import pickle
 
-from src.scripts_utils import (
+from qdet_utils.scripts_utils import (
     get_dataframes_text2props,
     get_mapper,
     get_text2props_model_by_config_and_dataset,
@@ -10,8 +10,8 @@ from src.scripts_utils import (
     get_predictions_text2props,
     evaluate_model,
 )
-from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
-from src.configs import *
+from qdet_utils.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from qdet_utils.configs import *
 
 nltk.download('averaged_perceptron_tagger')
 

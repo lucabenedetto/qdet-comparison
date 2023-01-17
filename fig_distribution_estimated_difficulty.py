@@ -1,7 +1,7 @@
 import pandas as pd
 import pickle
 
-from src.plot_utils import plot_violinplot_race, plot_violinplot_arc, plot_hexbin_am
+from qdet_utils.plot_utils import plot_violinplot_race, plot_violinplot_arc, plot_hexbin_am
 
 
 BERT_QA = 'BERT $Q_A$'

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
-from src.data_utils.mapping_tranformers import get_text_difficulty_and_answer_texts
-from src.constants import (
+from qdet_utils.data_utils.mapping_tranformers import get_text_difficulty_and_answer_texts
+from qdet_utils.constants import (
     DATA_DIR,
     RACE_PP,
     RACE_PP_4K,

@@ -1,8 +1,8 @@
 import os
 import pandas as pd
 
-from src.constants import DATA_DIR, DIFFICULTY
-from src.plot_utils import bar_plot_question_distribution_by_difficulty, hist_plot_question_distribution_by_difficulty
+from qdet_utils.constants import DATA_DIR, DIFFICULTY
+from qdet_utils.plot_utils import bar_plot_question_distribution_by_difficulty, hist_plot_question_distribution_by_difficulty
 
 
 def main():

@@ -6,8 +6,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from r2de.encoding import get_encoded_texts
 from r2de.model import get_model
 
-from src.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
-from src.scripts_utils import get_predictions_r2de, evaluate_model, get_mapper, get_dataframes_r2de
+from qdet_utils.constants import RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, DATA_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K
+from qdet_utils.scripts_utils import get_predictions_r2de, evaluate_model, get_mapper, get_dataframes_r2de
 
 LIST_DATASET_NAMES = [RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K]
 RANDOM_SEEDS = [0, 1, 2, 3, 4]

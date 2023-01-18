@@ -15,11 +15,10 @@ DEV = 'dev'
 TEST = 'test'
 TRAIN = 'train'
 
-ANS_ID = 'id'
-CORRECT = 'correct'
-CORRECT_ANSWER = 'correct_answer'
 CORRECT_ANSWERS_LIST = 'correct_answers_list'
-DESCRIPTION = 'description'
+PRED_DIFFICULTY = 'predicted_difficulty'
+
+CORRECT_ANSWER = 'correct_answer'
 OPTIONS = 'options'
 OPTION_ = 'option_'
 OPTION_0 = 'option_0'
@@ -30,15 +29,17 @@ QUESTION = 'question'
 CONTEXT = 'context'
 CONTEXT_ID = 'context_id'
 Q_ID = 'q_id'
-QUESTION_ID = 'question_id'
 SPLIT = 'split'
 DIFFICULTY = 'difficulty'
-PRED_DIFFICULTY = 'predicted_difficulty'
-
 DF_COLS = [
     CORRECT_ANSWER, OPTIONS, OPTION_0, OPTION_1, OPTION_2, OPTION_3,
     QUESTION, CONTEXT, CONTEXT_ID, Q_ID, SPLIT, DIFFICULTY
 ]
+
+TF_ANS_ID = 'id'
+TF_CORRECT = 'correct'
+TF_DESCRIPTION = 'description'
+TF_QUESTION_ID = 'question_id'
 
 TF_Q_ONLY = 'question_only'
 TF_Q_CORRECT = 'question_correct'

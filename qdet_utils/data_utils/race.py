@@ -74,25 +74,29 @@ def prepare_and_return_race_c_df(data_dir: str, split: str):
     return df
 
 
-def prepare_racepp_dataset(race_data_dir, race_c_data_dir, output_data_dir):
-    out_dfs = dict()
-    for idx in [-1, 4, 8, 12]:
-        out_dfs[idx] = dict()
+def prepare_racepp_dataset(race_data_dir, race_c_data_dir, output_data_dir):  # , training_size=None, random_state=None):
+    out_dfs = []
     for split in [TRAIN, DEV, TEST]:
         df_race = prepare_and_return_race_df(data_dir=race_data_dir, split=split)
         df_race_c = prepare_and_return_race_c_df(data_dir=race_c_data_dir, split=split)
         df = pd.concat([df_race, df_race_c])
         assert set(df.columns) == set(DF_COLS)
-        if split == TRAIN:
-            for idx in [4, 8, 12]:
-                tmp_df = pd.concat([df[df[DIFFICULTY] == 0].sample(idx * 10**3),
-                                    df[df[DIFFICULTY] == 1].sample(idx * 10**3),
-                                    df[df[DIFFICULTY] == 2].sample(idx * 10**3)])
-                tmp_df.to_csv(os.path.join(output_data_dir, f'race_pp_{idx}k_{split}.csv'), index=False)
-                out_dfs[idx][split] = tmp_df.copy()
         df.to_csv(os.path.join(output_data_dir, f'race_pp_{split}.csv'), index=False)
-        out_dfs[-1][split] = df.copy()
+        out_dfs.append(df.copy())
     return out_dfs
+
+
+def prepare_subsampled_racepp_dataset(df_train, df_dev, df_test, training_size, output_data_dir, random_state=None):
+    # TODO:
+    #  this is the sampling per class (in the original implementation, it is balanced!!), I should also
+    #  implement the sampling "unbalanced"
+    df_train = pd.concat([df_train[df_train[DIFFICULTY] == 0].sample(training_size, random_state=random_state),
+                          df_train[df_train[DIFFICULTY] == 1].sample(training_size, random_state=random_state),
+                          df_train[df_train[DIFFICULTY] == 2].sample(training_size, random_state=random_state)])
+    df_train.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TRAIN}.csv'), index=False)
+    df_dev.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{DEV}.csv'), index=False)
+    df_test.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TEST}.csv'), index=False)
+    return [df_train, df_dev, df_test]
 
 
 def prepare_race_dataset(race_data_dir, output_data_dir):

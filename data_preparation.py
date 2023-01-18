@@ -2,8 +2,8 @@ import logging
 import os
 import pandas as pd
 
-from qdet_utils.constants import DATA_DIR, DEV, TEST, TRAIN
-from qdet_utils.data_utils.race import prepare_racepp_dataset
+from qdet_utils.constants import DATA_DIR
+from qdet_utils.data_utils.race import prepare_racepp_dataset, prepare_subsampled_racepp_dataset
 from qdet_utils.data_utils.arc import prepare_arc_dataset
 from qdet_utils.data_utils.am import prepare_assistments_dataset
 from qdet_utils.data_utils.mapping_text2props import convert_to_text2props_format_and_store_data
@@ -20,17 +20,15 @@ def main():
     logger.info("Starting preparation RACE++")
     race_data_dir = 'data/raw/RACE'
     race_c_data_dir = 'data/raw/race-c-master/data'
-    dict_out_dfs = prepare_racepp_dataset(race_data_dir, race_c_data_dir, DATA_DIR)
-    # Conversion to R2DE format
-    convert_to_r2de_format_and_store_data(dict_out_dfs[-1][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp')
-    convert_to_r2de_format_and_store_data(dict_out_dfs[4][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_4k')
-    convert_to_r2de_format_and_store_data(dict_out_dfs[8][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_8k')
-    convert_to_r2de_format_and_store_data(dict_out_dfs[12][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_12k')
-    # conversion to text2props format
-    convert_to_text2props_format_and_store_data(dict_out_dfs[-1][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp')
-    convert_to_text2props_format_and_store_data(dict_out_dfs[4][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_4k')
-    convert_to_text2props_format_and_store_data(dict_out_dfs[8][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_8k')
-    convert_to_text2props_format_and_store_data(dict_out_dfs[12][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_12k')
+    # whole RACE++
+    df_train_rpp, df_dev_rpp, df_test_rpp = prepare_racepp_dataset(race_data_dir, race_c_data_dir, DATA_DIR)
+    convert_to_r2de_format_and_store_data(df_train_rpp, df_dev_rpp, df_test_rpp, DATA_DIR, 'race_pp')
+    convert_to_text2props_format_and_store_data(df_train_rpp, df_dev_rpp, df_test_rpp, DATA_DIR, 'race_pp')
+    # sub-sampled datasets
+    for training_size in [4_000, 8_000, 12_000]:
+        df_train, df_dev, df_test = prepare_subsampled_racepp_dataset(df_train_rpp, df_dev_rpp, df_test_rpp, training_size, DATA_DIR)
+        convert_to_r2de_format_and_store_data(df_train, df_dev, df_test, DATA_DIR, f'race_pp_{training_size}')
+        convert_to_text2props_format_and_store_data(df_train, df_dev, df_test, DATA_DIR, f'race_pp_{training_size}')
 
     # ARC
     logger.info("Starting preparation ARC")

@@ -1,4 +1,5 @@
 from typing import Dict
+import logging
 import pandas as pd
 import os
 
@@ -21,6 +22,10 @@ from qdet_utils.constants import (
     TRAIN,
 )
 from ._data_manager import DataManager
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class ArcDataManager(DataManager):
@@ -107,3 +112,21 @@ class ArcDataManager(DataManager):
         assert set(df.columns) == set(DF_COLS)
 
         return df
+
+    def get_arc_balanced_dataset(self, dataset: Dict[str, pd.DataFrame], out_data_dir: str):
+        logger.info("Starting preparation ARC Balanced")
+        df_train = dataset[TRAIN]
+        balanced_df_train = pd.DataFrame(columns=df_train.columns)
+        # TODO add some params instead of hard-coding the number of samples to keep
+        for diff in range(3, 10):
+            if diff in {5, 8}:
+                balanced_df_train = pd.concat(
+                    [balanced_df_train, df_train[df_train[DIFFICULTY] == diff].sample(n=500)], ignore_index=True)
+            else:
+                balanced_df_train = pd.concat([balanced_df_train, df_train[df_train[DIFFICULTY] == diff]], ignore_index=True)
+        balanced_df_train = balanced_df_train.sample(frac=1.0)
+
+        balanced_dataset = {TRAIN: balanced_df_train.copy(), DEV: dataset[DEV].copy(), TEST: dataset[TEST].copy()}
+        for split in [TRAIN, DEV, TEST]:
+            balanced_dataset[split].to_csv(os.path.join(out_data_dir, f'arc_balanced_{split}.csv'), index=False)
+        return balanced_dataset

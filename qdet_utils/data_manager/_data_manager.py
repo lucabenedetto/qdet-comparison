@@ -145,7 +145,7 @@ class DataManager:
         text_difficulty_df, answer_texts_df = self.get_text_difficulty_and_answer_texts(dataset[DEV], answer_texts_df, skip_answers_texts)
         text_difficulty_df.to_csv(os.path.join(data_dir, f'tf_{dataset_name}_text_difficulty_dev.csv'), index=False)
 
-        if not skip_answers_texts:
+        if skip_answers_texts:
             answer_texts_df.to_csv(os.path.join(data_dir, f'tf_{dataset_name}_answers_texts.csv'), index=False)
 
     def get_text_difficulty_and_answer_texts(self, df, answers_text_df, skip_ans_texts):
@@ -157,7 +157,7 @@ class DataManager:
                     ignore_index=True
                 )
         else:
-            for correct_option, _, opt0, opt1, opt2, opt3, question, context, _, q_id, _, difficulty in df.values:
+            for correct_option, _, opt0, opt1, opt2, opt3, question, context, _, q_id, _, difficulty in df[DF_COLS].values:
                 answers_text_df = pd.concat(
                     [
                         answers_text_df.astype(self.TF_AS_TYPE_DICT),

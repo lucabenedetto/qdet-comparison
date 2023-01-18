@@ -1,11 +1,10 @@
 import logging
-import os
-import pandas as pd
 
 from qdet_utils.constants import (
     DATA_DIR,
     RACE_PP,
     ARC,
+    ARC_BALANCED,
     AM,
 )
 from qdet_utils.data_manager import (
@@ -47,20 +46,11 @@ def main():
     arc_dm.convert_to_text2props_format_and_store_dataset(dataset, DATA_DIR, ARC)
     arc_dm.convert_to_transformers_format_and_store_dataset(dataset, DATA_DIR, ARC, skip_answers_texts=False)
 
-    # TODO
-    # logger.info("Starting preparation ARC Balanced")
-    # balanced_df_train = pd.DataFrame(columns=df_train.columns)
-    # for diff in range(3, 10):
-    #     if diff in {5, 8}:
-    #         balanced_df_train = pd.concat([balanced_df_train, df_train[df_train['difficulty'] == diff].sample(n=500)], ignore_index=True)
-    #     else:
-    #         balanced_df_train = pd.concat([balanced_df_train, df_train[df_train['difficulty'] == diff]], ignore_index=True)
-    # balanced_df_train = balanced_df_train.sample(frac=1.0)
-    # balanced_df_train.to_csv(os.path.join('data/processed', f'arc_balanced_train.csv'), index=False)
-    # df_dev.to_csv(os.path.join('data/processed', f'arc_balanced_dev.csv'), index=False)
-    # df_test.to_csv(os.path.join('data/processed', f'arc_balanced_test.csv'), index=False)
-    # convert_to_r2de_format_and_store_dataset(balanced_df_train, df_dev, df_test, DATA_DIR, 'arc_balanced')
-    # convert_to_text2props_format_and_store_dataset(balanced_df_train, df_dev, df_test, DATA_DIR, 'arc_balanced')
+    logger.info("Starting preparation ARC Balanced")
+    balanced_dataset = arc_dm.get_arc_balanced_dataset(dataset, DATA_DIR)
+    arc_dm.convert_to_r2de_format_and_store_dataset(balanced_dataset, DATA_DIR, ARC_BALANCED)
+    arc_dm.convert_to_text2props_format_and_store_dataset(balanced_dataset, DATA_DIR, ARC_BALANCED)
+    arc_dm.convert_to_transformers_format_and_store_dataset(balanced_dataset, DATA_DIR, ARC_BALANCED, skip_answers_texts=False)
 
     # ASSISTments
     logger.info("Starting preparation AM")

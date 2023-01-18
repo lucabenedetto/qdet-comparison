@@ -1,3 +1,4 @@
+import logging
 import os
 import pandas as pd
 
@@ -9,9 +10,14 @@ from qdet_utils.data_utils.mapping_text2props import convert_to_text2props_forma
 from qdet_utils.data_utils.mapping_r2de import convert_to_r2de_format_and_store_data
 
 
+# set logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 def main():
     # RACE++
-    print("DOING RACE++")
+    logger.info("Starting preparation RACE++")
     race_data_dir = 'data/raw/RACE'
     race_c_data_dir = 'data/raw/race-c-master/data'
     dict_out_dfs = prepare_racepp_dataset(race_data_dir, race_c_data_dir, DATA_DIR)
@@ -27,13 +33,13 @@ def main():
     convert_to_text2props_format_and_store_data(dict_out_dfs[12][TRAIN], dict_out_dfs[-1][DEV], dict_out_dfs[-1][TEST], DATA_DIR, 'race_pp_12k')
 
     # ARC
-    print("DOING ARC")
+    logger.info("Starting preparation ARC")
     arc_data_dir = 'data/raw/ARC-V1-Feb2018'
     df_train, df_dev, df_test = prepare_arc_dataset(arc_data_dir, 'data/processed')
     convert_to_r2de_format_and_store_data(df_train, df_dev, df_test, DATA_DIR, 'arc')
     convert_to_text2props_format_and_store_data(df_train, df_dev, df_test, DATA_DIR, 'arc')
 
-    print("DOING ARC Balanced")
+    logger.info("Starting preparation ARC Balanced")
     balanced_df_train = pd.DataFrame(columns=df_train.columns)
     for diff in range(3, 10):
         if diff in {5, 8}:
@@ -48,7 +54,7 @@ def main():
     convert_to_text2props_format_and_store_data(balanced_df_train, df_dev, df_test, DATA_DIR, 'arc_balanced')
 
     # ASSISTments
-    print("[INFO] DOING AM...")
+    logger.info("Starting preparation AM")
     am_data_dir = 'data/interim/assistments'
     df_train, df_dev, df_test = prepare_assistments_dataset(am_data_dir, 'data/processed')
     convert_to_r2de_format_and_store_data(df_train, df_dev, df_test, DATA_DIR, 'am')

@@ -1,6 +1,7 @@
 from typing import Optional
 import os
 
+from qdet_utils.difficulty_mapping_methods import get_mapper
 from qdet_utils.evaluation import evaluate_model
 from qdet_utils.constants import (
     RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K,
@@ -27,7 +28,7 @@ class BaseExperiment:
 
         self.df_train = None
         self.df_test = None
-        self.my_mapper = self.get_mapper(self.dataset_name)
+        self.my_mapper = get_mapper(self.dataset_name)
         self.discrete_regression = self.get_discrete_regression(self.dataset_name)
         self.y_true_train = None
         self.y_true_test = None
@@ -60,40 +61,6 @@ class BaseExperiment:
     @staticmethod
     def get_discrete_regression(dataset_name):
         return dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED}
-
-    def get_mapper(self, dataset_name: str):
-        if dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
-            return self.mapper_race
-        if dataset_name in {ARC, ARC_BALANCED}:
-            return self.mapper_arc
-        if dataset_name == AM:
-            return self.mapper_am
-        else:
-            raise NotImplementedError
-
-    # TODO these mappers should be probably moved somewhere else
-
-    @staticmethod
-    def mapper_race(x):
-        if x <= 0.5:
-            return 0
-        elif x < 1.5:
-            return 1
-        else:
-            return 2
-
-    @staticmethod
-    def mapper_am(x):
-        return x
-
-    @staticmethod
-    def mapper_arc(x):
-        if x < 3.5:
-            return 3
-        elif x >= 8.5:
-            return 9
-        else:
-            return round(x)
 
     # # # # # # # # # # # # #
 

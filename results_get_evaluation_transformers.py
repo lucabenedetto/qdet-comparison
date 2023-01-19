@@ -4,7 +4,8 @@ import pandas as pd
 from qdet_utils.constants import (
     RACE_PP, ARC, ARC_BALANCED, AM, OUTPUT_DIR, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, LIST_TF_ENCODINGS, TF_MODELS, TF_Q_ONLY
 )
-from qdet_utils.scripts_utils import evaluate_model, get_mapper
+from qdet_utils.evaluation import evaluate_model
+from qdet_utils.difficulty_mapping_methods import get_mapper
 
 LIST_DATASET_NAMES = [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]
 

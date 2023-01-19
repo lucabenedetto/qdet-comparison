@@ -11,7 +11,6 @@ def get_dict_params_by_config(config):
     else:
         raise NotImplementedError
 
-
 def get_config(feature_engineering_config, regression_config):
     assert feature_engineering_config in FEATURE_ENGINEERING_CONFIGS
     assert regression_config in REGRESSION_CONFIGS

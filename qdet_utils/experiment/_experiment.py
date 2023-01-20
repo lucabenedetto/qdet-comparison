@@ -19,15 +19,15 @@ class BaseExperiment:
     ):
         self.dataset_name = dataset_name
         self.data_dir = data_dir
-        self.output_data_dir = output_root_dir
+        self.output_root_dir = output_root_dir
         self.random_seed = random_seed
 
         self.model = None
         self.model_name = None  # Used for logging and in the filenames for saving the results.
         if self.random_seed is not None:
-            self.output_dir = os.path.join(self.output_data_dir, self.dataset_name, 'seed_' + str(self.random_seed))
+            self.output_dir = os.path.join(self.output_root_dir, self.dataset_name, 'seed_' + str(self.random_seed))
         else:
-            self.output_dir = os.path.join(self.output_data_dir, self.dataset_name)
+            self.output_dir = os.path.join(self.output_root_dir, self.dataset_name)
 
         self.df_train = None
         self.df_test = None

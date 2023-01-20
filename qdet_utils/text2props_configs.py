@@ -5,11 +5,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import normalize
 
-from text2props.model import Text2PropsModel
-from text2props.modules.estimators_from_text import (
-    FeatureEngAndRegressionPipeline,
-    FeatureEngAndRegressionEstimatorFromText,
-)
 from text2props.modules.feature_engineering import FeatureEngineeringModule
 from text2props.modules.feature_engineering.components import (
     ReadabilityFeaturesComponent,
@@ -18,12 +13,11 @@ from text2props.modules.feature_engineering.components import (
     Word2VecFeaturesComponent,
 )
 from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as prepr
-from text2props.modules.latent_traits_calibration import KnownParametersCalibrator
 from text2props.modules.regression import RegressionModule
 from text2props.modules.regression.components import SklearnRegressionComponent
 
 
-def get_dict_params_by_config(config):
+def text2props_get_dict_params_by_config(config):
     regressor_config = config.split('__')[1]
     if regressor_config == LR:
         return {DIFFICULTY: [{}]}
@@ -33,7 +27,7 @@ def get_dict_params_by_config(config):
         raise NotImplementedError
 
 
-def get_config(feature_engineering_config, regression_config):
+def text2props_get_config(feature_engineering_config, regression_config):
     assert feature_engineering_config in FEATURE_ENGINEERING_CONFIGS
     assert regression_config in REGRESSION_CONFIGS
     return feature_engineering_config + '__' + regression_config
@@ -83,7 +77,7 @@ RF = 'RF'
 REGRESSION_CONFIGS = {LR, RF}
 
 
-def get_feature_engineering_module_from_config(config, seed) -> FeatureEngineeringModule:
+def text2props_get_feature_engineering_module_from_config(config, seed) -> FeatureEngineeringModule:
     feature_engineering_config = config.split('__')[0]
     # All the possible components
     linguistic_features = LinguisticFeaturesComponent(version=2)
@@ -134,7 +128,7 @@ def get_feature_engineering_module_from_config(config, seed) -> FeatureEngineeri
     return FeatureEngineeringModule(dict_feat_eng_components[feature_engineering_config], normalize_method=normalize)
 
 
-def get_regression_module_from_config(config, difficulty_range, seed) -> RegressionModule:
+def text2props_get_regression_module_from_config(config, difficulty_range, seed) -> RegressionModule:
     regression_config = config.split('__')[1]
     dict_regression_components = {
         LR: [SklearnRegressionComponent(LinearRegression(), latent_trait_range=difficulty_range)],

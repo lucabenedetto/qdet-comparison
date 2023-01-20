@@ -1,3 +1,4 @@
+from random import random
 from typing import Dict
 import pandas as pd
 import json
@@ -62,15 +63,16 @@ class RaceDatamanager(DataManager):
             training_size: int,
             output_data_dir: str,
             random_state: int = None,
+            balanced_sampling: bool = True,
     ) -> Dict[str, pd.DataFrame]:
-        # TODO:
-        #  this is the sampling per class (in the original implementation, it is balanced!!), I should also
-        #  implement the sampling "unbalanced"
-        df_train = dataset[TRAIN].copy()
         subsampled_dataset = dict()
-        df_train = pd.concat([df_train[df_train[DIFFICULTY] == 0].sample(training_size, random_state=random_state),
-                              df_train[df_train[DIFFICULTY] == 1].sample(training_size, random_state=random_state),
-                              df_train[df_train[DIFFICULTY] == 2].sample(training_size, random_state=random_state)])
+        if balanced_sampling:
+            df_train = dataset[TRAIN].copy()
+            df_train = pd.concat([df_train[df_train[DIFFICULTY] == 0].sample(training_size, random_state=random_state),
+                                  df_train[df_train[DIFFICULTY] == 1].sample(training_size, random_state=random_state),
+                                  df_train[df_train[DIFFICULTY] == 2].sample(training_size, random_state=random_state)])
+        else:
+            df_train = dataset[TRAIN].sample(training_size, random_state=random_state)
         df_train.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TRAIN}.csv'), index=False)
         dataset[DEV].to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{DEV}.csv'), index=False)
         dataset[TEST].to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TEST}.csv'), index=False)

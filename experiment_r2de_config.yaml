@@ -1,0 +1,6 @@
+dataset_name: arc_balanced  # possible values are [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]
+encoding_idx: 0  # possible values are [0, 1, 2]
+model_name: r2de_encoding_0  # used values were ['r2de_encoding_0', 'r2de_encoding_2', 'r2de_encoding_2']
+random_seed: 42  # for the experiments we used: [0, 1, 2, 3, 4]
+n_iter: 4
+n_jobs: 8

@@ -1,0 +1,31 @@
+# These params are needed for / used by all the model types
+
+# Possible values are [RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED, AM]
+dataset_name: arc_balanced
+# Possible values are [r2de, text2props, random, majority]
+model_type: r2de
+# If desired, it is possible to specify the name used to save the model.
+model_name: None
+
+# # # # #
+
+# If given, it is used by all model types except but majority
+random_seed: 123  # for the experiments we used: [0, 1, 2, 3, 4]
+
+# # # # #
+
+# Used by r2de and text2props
+n_iter: 4
+n_jobs: 8
+cv: 5
+
+# # # # #
+
+# Specific for R2DE
+encoding_idx: 2  # possible values are [0, 1, 2]
+
+# # # # #
+
+# Specific for Text2Props
+feature_eng_config: read
+regression_config: LR  # possible values [RF, LR]

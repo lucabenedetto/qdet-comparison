@@ -36,7 +36,7 @@ for dataset_name in LIST_DATASET_NAMES:
                 converted_y_pred_test = [my_mapper(x) for x in y_pred_test]
 
                 output_dir = os.path.join(OUTPUT_DIR, dataset_name, 'seed_' + str(random_seed))
-                evaluate_model(root_string=f'{model}_{encoding}',
+                evaluate_model(model_name=f'{model}_{encoding}',
                                y_pred_test=converted_y_pred_test, y_pred_train=converted_y_pred_train,
                                y_true_test=y_true_test, y_true_train=y_true_train[:len(y_pred_train)],
                                output_dir=output_dir,

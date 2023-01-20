@@ -45,7 +45,7 @@ def get_metrics(y_true, y_pred, discrete_regression: bool = False, compute_corre
 
 
 def evaluate_model(
-        root_string: str,
+        model_name: str,
         y_pred_test: List[float],
         y_pred_train: List[float],
         y_true_test: List[float],
@@ -67,4 +67,4 @@ def evaluate_model(
         metrics_dict['test_' + metric] = metrics_test[metric]
         metrics_dict['train_' + metric] = metrics_train[metric]
     out_df = pd.DataFrame([metrics_dict])
-    out_df.to_csv(os.path.join(output_dir, 'eval_metrics_' + root_string + '.csv'), index=False)
+    out_df.to_csv(os.path.join(output_dir, 'eval_metrics_' + model_name + '.csv'), index=False)

@@ -17,11 +17,12 @@ from experiment_t2p_params import (
     n_jobs,
 )
 
-if __name__ == "__main__":
+
+def text2props_main():
     experiment = Text2propsExperiment(dataset_name=dataset_name, random_seed=random_seed)
     experiment.get_dataset()
 
-    difficulty_range = experiment.get_difficulty_range(dataset_name)  # TODO this method should probably be somewhere else.
+    difficulty_range = experiment.get_difficulty_range(dataset_name)  # TODO this should probably be somewhere else.
     config = get_config(feature_engineering_config=feature_eng_config, regression_config=regression_config)
     feat_eng_and_regr_pipeline = FeatureEngAndRegressionPipeline(
         get_feature_engineering_module_from_config(config, random_seed),
@@ -33,3 +34,7 @@ if __name__ == "__main__":
     experiment.train(dict_params, n_iter, n_jobs)
     experiment.predict()
     experiment.evaluate()
+
+
+if __name__ == "__main__":
+    text2props_main()

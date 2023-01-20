@@ -1,4 +1,3 @@
-from random import random
 from typing import Dict
 import pandas as pd
 import json

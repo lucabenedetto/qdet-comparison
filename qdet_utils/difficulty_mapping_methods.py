@@ -23,7 +23,7 @@ def mapper_arc(x):
         return round(x)
 
 
-def get_mapper(dataset: str):
+def get_difficulty_mapper(dataset: str):
     if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:
         return mapper_race
     if dataset in {ARC, ARC_BALANCED}:

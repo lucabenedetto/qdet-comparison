@@ -1,7 +1,7 @@
 from typing import Optional
 import os
 
-from qdet_utils.difficulty_mapping_methods import get_mapper
+from qdet_utils.difficulty_mapping_methods import get_difficulty_mapper
 from qdet_utils.evaluation import evaluate_model
 from qdet_utils.constants import (
     RACE_PP, ARC, ARC_BALANCED, AM, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K,
@@ -31,7 +31,7 @@ class BaseExperiment:
 
         self.df_train = None
         self.df_test = None
-        self.my_mapper = get_mapper(self.dataset_name)
+        self.difficulty_mapper = get_difficulty_mapper(self.dataset_name)
         self.discrete_regression = self.get_discrete_regression(self.dataset_name)
         self.y_true_train = None
         self.y_true_test = None
@@ -53,8 +53,8 @@ class BaseExperiment:
         raise NotImplementedError()
 
     def evaluate(self, compute_correlation: bool = True):
-        converted_y_pred_test = [self.my_mapper(x) for x in self.y_pred_test]
-        converted_y_pred_train = [self.my_mapper(x) for x in self.y_pred_train]
+        converted_y_pred_test = [self.difficulty_mapper(x) for x in self.y_pred_test]
+        converted_y_pred_train = [self.difficulty_mapper(x) for x in self.y_pred_train]
         evaluate_model(
             model_name=self.model_name,
             y_pred_test=converted_y_pred_test,

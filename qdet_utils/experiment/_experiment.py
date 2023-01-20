@@ -66,13 +66,9 @@ class BaseExperiment:
             compute_correlation=compute_correlation,
         )
 
-    # # # # # # # # # # # # # # # #
-
     @staticmethod
     def get_discrete_regression(dataset_name):
         return dataset_name in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K, ARC, ARC_BALANCED}
-
-    # # # # # # # # # # # # #
 
     def get_difficulty_range(self, dataset):
         if dataset in {RACE_PP, RACE_PP_4K, RACE_PP_8K, RACE_PP_12K}:

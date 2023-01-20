@@ -36,9 +36,10 @@ class Text2propsExperiment(BaseExperiment):
 
     def init_model(
             self,
-            pretrained_model: Optional[Text2PropsModel],
-            model_name: str,
-            feature_eng_and_regression_pipeline: Optional[FeatureEngAndRegressionPipeline],
+            pretrained_model: Optional[Text2PropsModel] = None,
+            model_name: str = 'model',
+            feature_eng_and_regression_pipeline: Optional[FeatureEngAndRegressionPipeline] = None,  # TODO
+            *args, **kwargs,
     ):
         if pretrained_model:
             # This is to use if the model is already defined and I don't have to train it
@@ -58,6 +59,7 @@ class Text2propsExperiment(BaseExperiment):
             n_iter: int,
             n_jobs: int,
             cv: int = 5,
+            *args, **kwargs,
     ):
         self.model.calibrate_latent_traits(None)
         scores = self.model.randomized_cv_train(

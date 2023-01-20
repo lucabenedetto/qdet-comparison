@@ -43,17 +43,16 @@ class BaseExperiment:
     def get_dataset(self):
         raise NotImplementedError()
 
-    # TODO fix the signature
-    def init_model(self, pretrained_model, model_name, feature_eng_and_regression_pipeline):
+    def init_model(self, pretrained_model: Optional = None, model_name: str = 'model', *args, **kwargs):
         raise NotImplementedError()
 
-    def train(self, dict_params, n_iter, n_jobs, cv):
+    def train(self, *args, **kwargs):
         raise NotImplementedError()
 
     def predict(self):
         raise NotImplementedError()
 
-    def evaluate(self, compute_correlation=True):
+    def evaluate(self, compute_correlation: bool = True):
         converted_y_pred_test = [self.my_mapper(x) for x in self.y_pred_test]
         converted_y_pred_train = [self.my_mapper(x) for x in self.y_pred_train]
         evaluate_model(root_string=self.model_name, y_pred_test=converted_y_pred_test, y_pred_train=converted_y_pred_train,

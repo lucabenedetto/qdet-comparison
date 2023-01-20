@@ -1,16 +1,8 @@
-from typing import Optional, Dict, List
+from typing import Optional
 import numpy as np
 import os
 import pandas as pd
 import pickle
-
-from text2props.constants import DIFFICULTY
-from text2props.model import Text2PropsModel
-from text2props.modules.estimators_from_text import (
-    FeatureEngAndRegressionPipeline,
-    FeatureEngAndRegressionEstimatorFromText,
-)
-from text2props.modules.latent_traits_calibration import KnownParametersCalibrator
 
 from qdet_utils.experiment import BaseExperiment
 from qdet_utils.constants import Q_ID, OUTPUT_DIR, DATA_DIR
@@ -25,33 +17,21 @@ class MajorityExperiment(BaseExperiment):
             random_seed: Optional[int] = None,
     ):
         super().__init__(dataset_name, data_dir, output_root_dir, random_seed)
-        self.dict_latent_traits = None
         self.value = None
 
     def get_dataset(self):
+        # TODO I should redo this in order not to use the t2p dataframe
         self.df_train = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_train.csv'), dtype={Q_ID: str})
         self.df_test = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_test.csv'), dtype={Q_ID: str})
         self.y_true_train = pickle.load(open(os.path.join(self.data_dir, f'y_true_train_{self.dataset_name}.p'), 'rb'))
         self.y_true_dev = pickle.load(open(os.path.join(self.data_dir, f'y_true_dev_{self.dataset_name}.p'), 'rb'))
         self.y_true_test = pickle.load(open(os.path.join(self.data_dir, f'y_true_test_{self.dataset_name}.p'), 'rb'))
-        # self.dict_latent_traits = pickle.load(open(os.path.join(self.data_dir, f't2p_{self.dataset_name}_difficulty_dict.p'), "rb"))
 
-    def init_model(
-            self,
-            pretrained_model: Optional[Text2PropsModel],  # TODO remove this
-            model_name: str,
-            feature_eng_and_regression_pipeline: Optional[FeatureEngAndRegressionPipeline],  # TODO remove this
-    ):
+    def init_model(self, pretrained_model: Optional = None, model_name: str = 'model', *args, **kwargs):
         self.model_name = model_name
 
     # train with randomized CV and save model
-    def train(
-            self,
-            dict_params: Dict[str, List[Dict[str, List[float]]]],
-            n_iter: int,
-            n_jobs: int,
-            cv: int = 5,
-    ):
+    def train(self, *args, **kwargs):
         if self.discrete_regression:
             self.value = pd.DataFrame({'d': self.y_true_train})\
                            .groupby('d').size().reset_index().sort_values(0, ascending=False)['d'].values[0]

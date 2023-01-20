@@ -35,8 +35,9 @@ class R2deExperiment(BaseExperiment):
     def init_model(
             self,
             pretrained_model: Optional = None,
-            model_name: str = None,
+            model_name: str = 'model',
             encoding_idx: int = None,
+            *args, **kwargs
     ):
         if pretrained_model:
             # This is to use if the model is already defined and I don't have to train it
@@ -53,6 +54,7 @@ class R2deExperiment(BaseExperiment):
             n_iter: int,
             n_jobs: int,
             cv: int = 5,
+            *args, **kwargs,
     ):
         self.x_train, self.x_test = get_encoded_texts(self.encoding_idx, self.df_train, self.df_test)
         random_search = RandomizedSearchCV(self.model, dict_params, n_iter=n_iter, cv=cv, n_jobs=n_jobs, random_state=self.random_seed)

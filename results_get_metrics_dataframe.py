@@ -39,7 +39,7 @@ def main():
         for feature_eng_config in LIST_FEATURE_ENG_CONFIGS:
             if feature_eng_config in {W2V_Q_ALL, W2V_Q_CORRECT, W2V_Q_ALL_AND_LING, W2V_Q_CORRECT_AND_LING} and dataset == AM:
                 continue
-            config = get_config(feature_engineering_config=feature_eng_config, regression_config=REGRESSION_CONFIG)
+            config = text2props_get_config(feature_engineering_config=feature_eng_config, regression_config=REGRESSION_CONFIG)
             new_row_dict_train, new_row_dict_test = get_dict_results_for_model(dataset, config)
             output_df_train = pd.concat([output_df_train, pd.DataFrame([new_row_dict_train])], ignore_index=True)
             output_df_test = pd.concat([output_df_test, pd.DataFrame([new_row_dict_test])], ignore_index=True)

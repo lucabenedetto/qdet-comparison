@@ -50,9 +50,9 @@ class R2deExperiment(BaseExperiment):
     # train with randomized CV and save model
     def train(
             self,
-            dict_params: Dict[str, List[Dict[str, List[float]]]],
-            n_iter: int,
-            n_jobs: int,
+            dict_params: Dict[str, List[Dict[str, List[float]]]] = None,
+            n_iter: int = 10,
+            n_jobs: int = None,
             cv: int = 5,
             *args, **kwargs,
     ):

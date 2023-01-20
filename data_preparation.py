@@ -29,9 +29,10 @@ def main():
     race_pp_dm.convert_to_r2de_format_and_store_dataset(dataset, DATA_DIR, RACE_PP)
     race_pp_dm.convert_to_text2props_format_and_store_dataset(dataset, DATA_DIR, RACE_PP)
     race_pp_dm.convert_to_transformers_format_and_store_dataset(dataset, DATA_DIR, RACE_PP, skip_answers_texts=False)
+
     # sub-sampled datasets
     for training_size in [4_000, 8_000, 12_000]:
-        sub_sampled_dataset = race_pp_dm.get_subsampled_racepp_dataset(dataset, training_size, DATA_DIR)
+        sub_sampled_dataset = race_pp_dm.get_subsampled_racepp_dataset(DATA_DIR, training_size, DATA_DIR)
         dataset_name = f'{RACE_PP}_{training_size}'
         race_pp_dm.convert_to_r2de_format_and_store_dataset(sub_sampled_dataset, DATA_DIR, dataset_name)
         race_pp_dm.convert_to_text2props_format_and_store_dataset(sub_sampled_dataset, DATA_DIR, dataset_name)

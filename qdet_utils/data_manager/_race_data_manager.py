@@ -58,26 +58,28 @@ class RaceDatamanager(DataManager):
 
     def get_subsampled_racepp_dataset(
             self,
-            dataset: Dict[str, pd.DataFrame],
+            data_dir: str,
             training_size: int,
             output_data_dir: str,
             random_state: int = None,
             balanced_sampling: bool = True,
     ) -> Dict[str, pd.DataFrame]:
+        df_train = pd.read_csv(os.path.join(data_dir, f'race_pp_{TRAIN}.csv'))
+        df_dev = pd.read_csv(os.path.join(data_dir, f'race_pp_{DEV}.csv'))
+        df_test = pd.read_csv(os.path.join(data_dir, f'race_pp_{TEST}.csv'))
         subsampled_dataset = dict()
         if balanced_sampling:
-            df_train = dataset[TRAIN].copy()
             df_train = pd.concat([df_train[df_train[DIFFICULTY] == 0].sample(training_size, random_state=random_state),
                                   df_train[df_train[DIFFICULTY] == 1].sample(training_size, random_state=random_state),
                                   df_train[df_train[DIFFICULTY] == 2].sample(training_size, random_state=random_state)])
         else:
-            df_train = dataset[TRAIN].sample(training_size, random_state=random_state)
+            df_train = df_train.sample(training_size, random_state=random_state)
         df_train.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TRAIN}.csv'), index=False)
-        dataset[DEV].to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{DEV}.csv'), index=False)
-        dataset[TEST].to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TEST}.csv'), index=False)
+        df_dev.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{DEV}.csv'), index=False)
+        df_test.to_csv(os.path.join(output_data_dir, f'race_pp_{training_size}_{TEST}.csv'), index=False)
         subsampled_dataset[TRAIN] = df_train.copy()
-        subsampled_dataset[DEV] = dataset[DEV].copy()
-        subsampled_dataset[TEST] = dataset[TEST].copy()
+        subsampled_dataset[DEV] = df_dev.copy()
+        subsampled_dataset[TEST] = df_test.copy()
         return subsampled_dataset
 
     def get_race_dataset(self, data_dir: str, out_data_dir: str, save_dataset: bool = True) -> Dict[str, pd.DataFrame]:

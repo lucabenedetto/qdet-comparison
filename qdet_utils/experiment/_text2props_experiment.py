@@ -41,12 +41,12 @@ class Text2propsExperiment(BaseExperiment):
             feature_eng_and_regression_pipeline: Optional[FeatureEngAndRegressionPipeline] = None,  # TODO
             *args, **kwargs,
     ):
+        self.model_name = model_name
         if pretrained_model:
             # This is to use if the model is already defined and I don't have to train it
-            raise NotImplementedError()
+            self.model = pretrained_model
         else:
             # Here I init a "new" model which will have to be trained
-            self.model_name = model_name
             self.model = Text2PropsModel(
                 latent_traits_calibrator=KnownParametersCalibrator(self.dict_latent_traits),
                 estimator_from_text=FeatureEngAndRegressionEstimatorFromText({DIFFICULTY: feature_eng_and_regression_pipeline})

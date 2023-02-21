@@ -49,7 +49,7 @@ class BaseExperiment:
     def train(self, *args, **kwargs):
         raise NotImplementedError()
 
-    def predict(self):
+    def predict(self, save_predictions):
         raise NotImplementedError()
 
     def evaluate(self, compute_correlation: bool = True):

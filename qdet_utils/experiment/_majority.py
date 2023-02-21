@@ -38,8 +38,9 @@ class MajorityExperiment(BaseExperiment):
         else:
             self.value = np.mean(self.y_true_train)
 
-    def predict(self):
+    def predict(self, save_predictions: bool = True):
         self.y_pred_train = [self.value] * len(self.df_train)
         self.y_pred_test = [self.value] * len(self.df_test)
-        pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, 'predictions_test_' + self.model_name + '.p'), 'wb'))
-        pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, 'predictions_train_' + self.model_name + '.p'), 'wb'))
+        if save_predictions:
+            pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, 'predictions_test_' + self.model_name + '.p'), 'wb'))
+            pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, 'predictions_train_' + self.model_name + '.p'), 'wb'))

@@ -72,8 +72,9 @@ class Text2propsExperiment(BaseExperiment):
         )
         pickle.dump(self.model, open(os.path.join(self.output_dir, 'model_' + self.model_name + '.p'), 'wb'))
 
-    def predict(self):
+    def predict(self, save_predictions: bool = True):
         self.y_pred_train = self.model.predict(self.df_train)[DIFFICULTY]
         self.y_pred_test = self.model.predict(self.df_test)[DIFFICULTY]
-        pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, 'predictions_test_' + self.model_name + '.p'), 'wb'))
-        pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, 'predictions_train_' + self.model_name + '.p'), 'wb'))
+        if save_predictions:
+            pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, 'predictions_test_' + self.model_name + '.p'), 'wb'))
+            pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, 'predictions_train_' + self.model_name + '.p'), 'wb'))

@@ -63,8 +63,9 @@ class R2deExperiment(BaseExperiment):
         # best_scores = random_search.best_score_
         pickle.dump(self.model, open(os.path.join(self.output_dir, f'model_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
 
-    def predict(self):
+    def predict(self, save_predictions: bool = True):
         self.y_pred_train = self.model.predict(self.x_train)
         self.y_pred_test = self.model.predict(self.x_test)
-        pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, f'predictions_test_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
-        pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, f'predictions_train_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
+        if save_predictions:
+            pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, f'predictions_test_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
+            pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, f'predictions_train_r2de_encoding_{self.encoding_idx}.p'), 'wb'))

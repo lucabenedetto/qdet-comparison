@@ -31,4 +31,4 @@ def get_difficulty_mapper(dataset: str):
     if dataset == AM:
         return mapper_am
     else:
-        raise NotImplementedError
+        return None

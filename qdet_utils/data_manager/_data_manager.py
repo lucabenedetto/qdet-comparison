@@ -145,7 +145,7 @@ class DataManager:
         text_difficulty_df, answer_texts_df = self.get_text_difficulty_and_answer_texts(dataset[DEV], answer_texts_df, skip_answers_texts)
         text_difficulty_df.to_csv(os.path.join(data_dir, f'tf_{dataset_name}_text_difficulty_dev.csv'), index=False)
 
-        if skip_answers_texts:
+        if not skip_answers_texts:
             answer_texts_df.to_csv(os.path.join(data_dir, f'tf_{dataset_name}_answers_texts.csv'), index=False)
 
     def get_text_difficulty_and_answer_texts(self, df, answers_text_df, skip_ans_texts):

@@ -16,8 +16,7 @@ from qdet_utils.text2props_configs import (
 from qdet_utils.r2de_configs import r2de_get_dict_params_by_dataset
 
 
-def main():
-    config = yaml.safe_load(open('experiment_config.yaml', 'r'))
+def main(config):
     model_type = config['model_type']
     dataset_name = config['dataset_name']
 
@@ -82,4 +81,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    config = yaml.safe_load(open('experiment_config.yaml', 'r'))
+    main(config)

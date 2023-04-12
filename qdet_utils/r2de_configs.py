@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from scipy.stats import randint
 from qdet_utils.constants import (
     ARC,
@@ -6,7 +6,7 @@ from qdet_utils.constants import (
 )
 
 
-def r2de_get_dict_params(dataset_name: str, param_distribution: Dict[str, Any] = None):
+def r2de_get_dict_params(dataset_name: str, param_distribution: Optional[Dict[str, Any]] = None):
     if param_distribution is not None:
         return param_distribution
     if dataset_name in {ARC, ARC_BALANCED}:

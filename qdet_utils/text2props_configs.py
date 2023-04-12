@@ -113,9 +113,9 @@ def text2props_get_feature_engineering_module_from_config(config, seed) -> Featu
         W2V_Q_ONLY_AND_LING: [w2v_q_only, linguistic_features],
         W2V_Q_ALL_AND_LING: [w2v_q_all, linguistic_features],
         W2V_Q_CORRECT_AND_LING: [w2v_q_correct, linguistic_features],
-        LING_AND_READ_AND_R2DE_Q_ONLY: [linguistic_features, tfidf_q_only],  # TODO !
-        LING_AND_READ_AND_R2DE_Q_CORRECT: [linguistic_features, tfidf_q_correct],  # TODO !
-        LING_AND_READ_AND_R2DE_Q_ALL: [linguistic_features, tfidf_q_all],  # TODO !
+        LING_AND_READ_AND_R2DE_Q_ONLY: [linguistic_features, tfidf_q_only],
+        LING_AND_READ_AND_R2DE_Q_CORRECT: [linguistic_features, tfidf_q_correct],
+        LING_AND_READ_AND_R2DE_Q_ALL: [linguistic_features, tfidf_q_all],
         W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY: [w2v_q_only, linguistic_features, tfidf_q_only],
         W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT: [w2v_q_only, linguistic_features, tfidf_q_correct],
         W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ALL: [w2v_q_only, linguistic_features, tfidf_q_all],

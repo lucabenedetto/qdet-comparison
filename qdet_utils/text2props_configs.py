@@ -13,7 +13,7 @@ from text2props.modules.feature_engineering.components import (
     LinguisticFeaturesComponent,
     Word2VecFeaturesComponent,
 )
-from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor as prepr
+from text2props.modules.feature_engineering.utils import vectorizer_text_preprocessor
 from text2props.modules.regression import RegressionModule
 from text2props.modules.regression.components import SklearnRegressionComponent
 
@@ -67,7 +67,9 @@ FEATURE_ENGINEERING_CONFIGS = {
     W2V_Q_ONLY_AND_LING, W2V_Q_ALL_AND_LING, W2V_Q_CORRECT_AND_LING,
     W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_ONLY_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_ONLY_AND_LING_AND_R2DE_Q_ALL,
     W2V_Q_ALL_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_ALL_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_ALL_AND_LING_AND_R2DE_Q_ALL,
-    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ONLY, W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_CORRECT, W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ONLY,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_CORRECT,
+    W2V_Q_CORRECT_AND_LING_AND_R2DE_Q_ALL,
 }
 # below not implemented hybrid approaches
 # LING_AND_R2DE = 'ling_and_r2de'
@@ -78,27 +80,41 @@ LR = 'LR'
 RF = 'RF'
 REGRESSION_CONFIGS = {LR, RF}
 
+DEFAULT_W2V_SIZE = 100
+DEFAULT_TFIDF_MAX_FEATS = 1000
+DEFAULT_TFIDF_MIN_DF = 1000
+DEFAULT_TFIDF_MAX_DF = 1000
+
 
 def text2props_get_feature_engineering_module_from_config(config, seed) -> FeatureEngineeringModule:
     feature_engineering_config = config.split('__')[0]
     # All the possible components
     linguistic_features = LinguisticFeaturesComponent(version=2)
     readability_features = ReadabilityFeaturesComponent(use_smog=False, version=2)
-    w2v_q_only = Word2VecFeaturesComponent(size=100, concatenate_correct=False, concatenate_wrong=False, seed=seed)
-    w2v_q_all = Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=True, seed=seed)
-    w2v_q_correct = Word2VecFeaturesComponent(size=100, concatenate_correct=True, concatenate_wrong=False, seed=seed)
+    w2v_q_only = Word2VecFeaturesComponent(
+        size=DEFAULT_W2V_SIZE, concatenate_correct=False, concatenate_wrong=False, seed=seed)
+    w2v_q_all = Word2VecFeaturesComponent(
+        size=DEFAULT_W2V_SIZE, concatenate_correct=True, concatenate_wrong=True, seed=seed)
+    w2v_q_correct = Word2VecFeaturesComponent(
+        size=DEFAULT_W2V_SIZE, concatenate_correct=True, concatenate_wrong=False, seed=seed)
     tfidf_q_only = IRFeaturesComponent(
-        TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+        TfidfVectorizer(
+            stop_words='english', preprocessor=vectorizer_text_preprocessor,
+            min_df=DEFAULT_TFIDF_MIN_DF, max_df=DEFAULT_TFIDF_MAX_DF, max_features=DEFAULT_TFIDF_MAX_FEATS),
         concatenate_correct=False,
         concatenate_wrong=False,
     )
     tfidf_q_correct = IRFeaturesComponent(
-        TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+        TfidfVectorizer(
+            stop_words='english', preprocessor=vectorizer_text_preprocessor,
+            min_df=DEFAULT_TFIDF_MIN_DF, max_df=DEFAULT_TFIDF_MAX_DF, max_features=DEFAULT_TFIDF_MAX_FEATS),
         concatenate_correct=True,
         concatenate_wrong=False,
     )
     tfidf_q_all = IRFeaturesComponent(
-        TfidfVectorizer(stop_words='english', preprocessor=prepr, min_df=0.05, max_df=0.95, max_features=1000),
+        TfidfVectorizer(
+            stop_words='english', preprocessor=vectorizer_text_preprocessor,
+            min_df=DEFAULT_TFIDF_MIN_DF, max_df=DEFAULT_TFIDF_MAX_DF, max_features=DEFAULT_TFIDF_MAX_FEATS),
         concatenate_correct=True,
         concatenate_wrong=True,
     )

@@ -1,3 +1,4 @@
+from typing import Dict, Any, Optional
 from scipy.stats import randint
 from text2props.constants import DIFFICULTY
 from sklearn.ensemble import RandomForestRegressor
@@ -17,14 +18,15 @@ from text2props.modules.regression import RegressionModule
 from text2props.modules.regression.components import SklearnRegressionComponent
 
 
-def text2props_get_dict_params_by_config(config):
+def text2props_get_dict_params(config: str, param_distribution: Optional[Dict[str, Any]] = None):
+    if param_distribution is not None:
+        return param_distribution
     regressor_config = config.split('__')[1]
     if regressor_config == LR:
         return {DIFFICULTY: [{}]}
-    elif regressor_config == RF:
+    if regressor_config == RF:
         return {DIFFICULTY: [{'regressor__n_estimators': randint(20, 200), 'regressor__max_depth': randint(2, 50)}]}
-    else:
-        raise NotImplementedError
+    raise NotImplementedError
 
 
 def text2props_get_config(feature_engineering_config, regression_config):

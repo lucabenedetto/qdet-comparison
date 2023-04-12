@@ -11,7 +11,7 @@ from qdet_utils.text2props_configs import (
     text2props_get_config,
     text2props_get_regression_module_from_config,
     text2props_get_feature_engineering_module_from_config,
-    text2props_get_dict_params_by_config,
+    text2props_get_dict_params,
 )
 from qdet_utils.r2de_configs import r2de_get_dict_params
 
@@ -71,7 +71,7 @@ def main(experiment_config):
         )
         model_name = experiment_config['model_name'] if experiment_config['model_name'] != 'None' else model_config
         experiment.init_model(model_name=model_name, feature_eng_and_regression_pipeline=feat_eng_and_regr_pipeline)
-        dict_params = text2props_get_dict_params_by_config(model_config)
+        dict_params = text2props_get_dict_params(model_config)
         experiment.train(dict_params, n_iter, n_jobs, cv=cv)
         experiment.predict()
         experiment.evaluate()

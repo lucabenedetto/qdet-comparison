@@ -13,7 +13,7 @@ from qdet_utils.text2props_configs import (
     text2props_get_feature_engineering_module_from_config,
     text2props_get_dict_params_by_config,
 )
-from qdet_utils.r2de_configs import r2de_get_dict_params_by_dataset
+from qdet_utils.r2de_configs import r2de_get_dict_params
 
 
 def main(experiment_config):
@@ -52,7 +52,7 @@ def main(experiment_config):
         experiment = R2deExperiment(dataset_name=dataset_name, random_seed=random_seed)
         experiment.get_dataset()
         experiment.init_model(model_name=model_name, encoding_idx=encoding_idx)
-        param_distribution = r2de_get_dict_params_by_dataset(dataset_name)
+        param_distribution = r2de_get_dict_params(dataset_name)
         experiment.train(dict_params=param_distribution, n_iter=n_iter, n_jobs=n_jobs, cv=cv)
         experiment.predict()
         experiment.evaluate()

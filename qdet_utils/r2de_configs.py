@@ -5,7 +5,7 @@ from qdet_utils.constants import (
 )
 
 
-def r2de_get_dict_params_by_dataset(dataset_name, param_distribution=None):
+def r2de_get_dict_params(dataset_name, param_distribution=None):
     if param_distribution is not None:
         return param_distribution
     if dataset_name in {ARC, ARC_BALANCED}:

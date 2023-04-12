@@ -37,9 +37,12 @@ DF_COLS = [
 ]
 
 TF_ANS_ID = 'id'
+TF_ANSWERS = 'answers'
 TF_CORRECT = 'correct'
 TF_DESCRIPTION = 'description'
 TF_QUESTION_ID = 'question_id'
+TF_DIFFICULTY = 'difficulty'
+TF_PREDICTED_DIFFICULTY = 'predicted_difficulty'
 
 TF_Q_ONLY = 'question_only'
 TF_Q_CORRECT = 'question_correct'

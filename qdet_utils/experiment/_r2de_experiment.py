@@ -24,7 +24,7 @@ class R2deExperiment(BaseExperiment):
         self.x_train = None
         self.x_test = None
 
-    def get_dataset(self):
+    def get_dataset(self, *args, **kwargs):
         pass
         self.df_train = pd.read_csv(os.path.join(self.data_dir, f'r2de_{self.dataset_name}_train.csv'))
         self.df_test = pd.read_csv(os.path.join(self.data_dir, f'r2de_{self.dataset_name}_test.csv'))

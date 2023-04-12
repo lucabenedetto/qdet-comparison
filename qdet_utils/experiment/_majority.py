@@ -19,7 +19,7 @@ class MajorityExperiment(BaseExperiment):
         super().__init__(dataset_name, data_dir, output_root_dir, random_seed)
         self.value = None
 
-    def get_dataset(self):
+    def get_dataset(self, *args, **kwargs):
         # TODO I should redo this in order not to use the t2p dataframe
         self.df_train = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_train.csv'), dtype={Q_ID: str})
         self.df_test = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_test.csv'), dtype={Q_ID: str})

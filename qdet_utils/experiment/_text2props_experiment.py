@@ -26,7 +26,7 @@ class Text2propsExperiment(BaseExperiment):
         super().__init__(dataset_name, data_dir, output_root_dir, random_seed)
         self.dict_latent_traits = None
 
-    def get_dataset(self):
+    def get_dataset(self, *args, **kwargs):
         self.df_train = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_train.csv'), dtype={Q_ID: str})
         self.df_test = pd.read_csv(os.path.join(self.data_dir, f't2p_{self.dataset_name}_test.csv'), dtype={Q_ID: str})
         self.y_true_train = pickle.load(open(os.path.join(self.data_dir, f'y_true_train_{self.dataset_name}.p'), 'rb'))

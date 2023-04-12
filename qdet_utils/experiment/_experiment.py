@@ -40,7 +40,7 @@ class BaseExperiment:
         self.y_pred_test = None
         self.y_pred_dev = None
 
-    def get_dataset(self):
+    def get_dataset(self, *args, **kwargs):
         raise NotImplementedError()
 
     def init_model(self, pretrained_model: Optional = None, model_name: str = 'model', *args, **kwargs):

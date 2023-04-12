@@ -10,8 +10,12 @@ def mapper_race(x):
         return 2
 
 
-def mapper_am(x):
+def identity_mapper(x):
     return x
+
+
+def mapper_am(x):
+    return identity_mapper(x)
 
 
 def mapper_arc(x):
@@ -31,4 +35,4 @@ def get_difficulty_mapper(dataset: str):
     if dataset == AM:
         return mapper_am
     else:
-        return None
+        return identity_mapper

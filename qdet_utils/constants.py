@@ -12,6 +12,7 @@ AM = 'am'
 
 # name of splits (used in filenames, etc.)
 DEV = 'dev'
+VALIDATION = 'validation'
 TEST = 'test'
 TRAIN = 'train'
 
@@ -42,6 +43,8 @@ TF_CORRECT = 'correct'
 TF_DESCRIPTION = 'description'
 TF_QUESTION_ID = 'question_id'
 TF_DIFFICULTY = 'difficulty'
+TF_TEXT = 'text'
+TF_LABEL = 'label'
 TF_PREDICTED_DIFFICULTY = 'predicted_difficulty'
 
 TF_Q_ONLY = 'question_only'

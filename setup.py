@@ -20,6 +20,7 @@ setup(
         "textstat==0.7.3",
         "matplotlib==3.6.2",
         "transformers==4.27.4",
-        "tensorflow==2.12.0",
+        "datasets==2.11.0",
+        "evaluate==0.4.0",
     ],
 )

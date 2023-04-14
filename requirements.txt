@@ -12,3 +12,5 @@ matplotlib==3.6.2
 transformers==4.27.4
 datasets==2.11.0
 evaluate==0.4.0
+# r2de==0.2.0  # install from: https://github.com/lucabenedetto/r2de-nlp-to-estimating-irt-parameters
+# text2props==0.2.0  # install from: https://github.com/lucabenedetto/text2props

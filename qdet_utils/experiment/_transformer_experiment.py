@@ -31,6 +31,7 @@ from transformers import (
     AutoModelForSequenceClassification,
     TrainingArguments,
     Trainer,
+    PreTrainedTokenizerFast,
 )
 from transformers import EarlyStoppingCallback
 
@@ -94,7 +95,7 @@ class TransformerExperiment(BaseExperiment):
             pretrained_model: Optional[str] = DISTILBERT,
             model_name: str = 'model',
             max_length: int = 256,
-            pretrained_tokenizer: Optional = None,
+            pretrained_tokenizer: Optional[PreTrainedTokenizerFast] = None,
             *args, **kwargs,
     ):
         self.model_name = model_name

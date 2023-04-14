@@ -96,7 +96,7 @@ class TransformerExperiment(BaseExperiment):
 
     def init_model(
             self,
-            pretrained_model: Optional = DISTILBERT,
+            pretrained_model: Optional[str] = DISTILBERT,
             model_name: str = 'model',
             max_length: int = 256,  # TODO use this below
             pretrained_tokenizer: Optional = None,

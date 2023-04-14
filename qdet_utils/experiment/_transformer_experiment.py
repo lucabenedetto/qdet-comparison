@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List
+from typing import Optional
 import os
 import pandas as pd
 import pickle
@@ -11,23 +11,17 @@ from qdet_utils.constants import (
     TF_Q_ONLY,
     TF_Q_CORRECT,
     TF_CORRECT,
-    TF_ANS_ID,
     TF_TEXT,
     TF_LABEL,
     TF_DESCRIPTION,
     TF_QUESTION_ID,
     TF_ANSWERS,
     DISTILBERT,
-    BERT,
-    DEV,
     TEST,
     TRAIN,
     VALIDATION,
     TF_DIFFICULTY,
-    TF_PREDICTED_DIFFICULTY,
 )
-
-import numpy as np
 
 from datasets import Dataset, DatasetDict
 import evaluate
@@ -39,7 +33,6 @@ from transformers import (
     Trainer,
 )
 from transformers import EarlyStoppingCallback
-import torch  # TODO add torch to requirements.txt and setup.py
 
 
 class TransformerExperiment(BaseExperiment):

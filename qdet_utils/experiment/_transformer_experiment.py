@@ -57,6 +57,7 @@ class TransformerExperiment(BaseExperiment):
         self.data_collator = None
         self.input_mode = None
         self.trainer = None
+        self.max_length = None
 
     def get_dataset(self, input_mode, *args, **kwargs):
         df_train_original = pd.read_csv(os.path.join(self.data_dir, f'tf_{self.dataset_name}_text_difficulty_train.csv'))
@@ -104,13 +105,14 @@ class TransformerExperiment(BaseExperiment):
             *args, **kwargs,
     ):
         self.model_name = model_name
+        self.max_length = max_length
         if pretrained_tokenizer is None:
             pretrained_tokenizer = pretrained_model
         self.tokenizer = AutoTokenizer.from_pretrained(pretrained_tokenizer)
         
         self.model = AutoModelForSequenceClassification.from_pretrained(pretrained_model, num_labels=1)  # default loss for regression (num_labels=1) is MSELoss()
         # TODO possibly move the two lines below somewhere else
-        self.tokenized_dataset = self.dataset.map(self._preprocess_function, batched=True, max_length=max_length, padding=True)
+        self.tokenized_dataset = self.dataset.map(self._preprocess_function, batched=True)
         self.data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
 
     def train(
@@ -123,7 +125,7 @@ class TransformerExperiment(BaseExperiment):
             *args, **kwargs,
     ):
         training_args = TrainingArguments(
-            output_dir=os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}'),  # TODO check this
+            output_dir=os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}'),
             learning_rate=learning_rate,
             per_device_train_batch_size=batch_size,
             per_device_eval_batch_size=batch_size,
@@ -149,21 +151,26 @@ class TransformerExperiment(BaseExperiment):
         self.tokenizer.save_pretrained(os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}_tokenizer'))
         self.trainer.save_model(os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}_model'))
 
-    def predict(self, save_predictions: bool = True):
-        # TODO
-        inputs = tokenizer(text, return_tensors="pt")  # todo this is tmp, text is a single text/question
-        with torch.no_grad():  # todo check if I can remove this
-            logits = model(**inputs).logits
-
-        # TODO , this is from R2DE
-        # self.y_pred_train = self.model.predict(self.x_train)
-        # self.y_pred_test = self.model.predict(self.x_test)
-        # if save_predictions:
-        #     pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, f'predictions_test_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
-        #     pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, f'predictions_train_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
+    def predict(self, batch_size: int = 16, save_predictions: bool = True):
+        if self.trainer is None:
+            test_args = TrainingArguments(
+                output_dir = os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}'),
+                do_train = False,
+                do_predict = True,
+                per_device_eval_batch_size = batch_size,   
+            )
+            self.trainer = Trainer(model=self.model, args=test_args, compute_metrics=compute_metrics)
+        self.tokenized_dataset = self.dataset.map(self._preprocess_function, batched=True)
+        train_results = self.trainer.predict(self.tokenized_dataset[TRAIN])
+        self.y_pred_train = train_results.predictions
+        test_results = self.trainer.predict(self.tokenized_dataset[TEST])
+        self.y_pred_test = test_results.predictions
+        if save_predictions:
+            pickle.dump(self.y_pred_test, open(os.path.join(self.output_dir, f'predictions_test_{self.model_name}_{self.input_mode}.p'), 'wb'))
+            pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, f'predictions_train{self.model_name}_{self.input_mode}.p'), 'wb'))
 
     def _preprocess_function(self, examples):
-        return self.tokenizer(examples[TF_TEXT], truncation=True)
+        return self.tokenizer(examples[TF_TEXT], truncation=True, max_length=self.max_length, padding=True)
 
 
 # TODO clean this method below

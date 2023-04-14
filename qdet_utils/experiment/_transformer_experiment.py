@@ -102,13 +102,9 @@ class TransformerExperiment(BaseExperiment):
             pretrained_tokenizer: Optional = None,
             *args, **kwargs,
     ):
+        self.model_name = model_name
         if pretrained_tokenizer is None:
             pretrained_tokenizer = pretrained_model
-        # todo: I can remove this if else!
-        # if pretrained_model:  # TODO
-        #     self.tokenizer = AutoTokenizer.from_pretrained(f'drive/My Drive/colab/tokenizers/supervised_qdet_first_experiment_new_code')
-        #     self.model = AutoModelForSequenceClassification.from_pretrained(f'drive/My Drive/colab/models/supervised_qdet_first_experiment_new_code')
-        # else:
         self.tokenizer = AutoTokenizer.from_pretrained(pretrained_tokenizer)
         # default loss for the regression model (num_labels=1) is MSELoss()
         self.model = AutoModelForSequenceClassification.from_pretrained(pretrained_model, num_labels=1)

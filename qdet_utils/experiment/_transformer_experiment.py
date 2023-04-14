@@ -56,6 +56,7 @@ class TransformerExperiment(BaseExperiment):
         self.tokenized_dataset = None
         self.data_collator = None
         self.input_mode = None
+        self.trainer = None
 
     def get_dataset(self, input_mode, *args, **kwargs):
         df_train_original = pd.read_csv(os.path.join(self.data_dir, f'tf_{self.dataset_name}_text_difficulty_train.csv'))
@@ -133,7 +134,7 @@ class TransformerExperiment(BaseExperiment):
             load_best_model_at_end=True,
             # push_to_hub=False,
         )
-        trainer = Trainer(
+        self.trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=self.tokenized_dataset[TRAIN],
@@ -143,10 +144,10 @@ class TransformerExperiment(BaseExperiment):
             compute_metrics=compute_metrics,
             callbacks=[EarlyStoppingCallback(early_stopping_patience=early_stopping_patience)]
         )
-        trainer.train()
+        self.trainer.train()
         # TODO possibly change the names below so that they use the training args as well (e.g. learning rate, etc.).
         self.tokenizer.save_pretrained(os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}_tokenizer'))
-        trainer.save_model(os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}_model'))
+        self.trainer.save_model(os.path.join(self.output_dir, f'{self.model_name}_{self.input_mode}_model'))
 
     def predict(self, save_predictions: bool = True):
         # TODO

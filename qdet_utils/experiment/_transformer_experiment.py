@@ -166,7 +166,7 @@ class TransformerExperiment(BaseExperiment):
         #     pickle.dump(self.y_pred_train, open(os.path.join(self.output_dir, f'predictions_train_r2de_encoding_{self.encoding_idx}.p'), 'wb'))
 
     def _preprocess_function(self, examples):
-        return self.tokenizer(examples[TF_TEXT], truncation=True, max_length=1024, padding=True)
+        return self.tokenizer(examples[TF_TEXT], truncation=True)
 
 
 # TODO clean this method below

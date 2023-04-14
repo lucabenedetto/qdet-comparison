@@ -166,12 +166,11 @@ class TransformerExperiment(BaseExperiment):
         return self.tokenizer(examples[TF_TEXT], truncation=True, max_length=self.max_length, padding=True)
 
 
-# TODO clean this method below
 def compute_metrics(eval_pred):
     r_squared = evaluate.load("r_squared")
-    mse = evaluate.load("mse")
-    mae = evaluate.load("mae")
-    pearsonr = evaluate.load("pearsonr")
+    # mse = evaluate.load("mse")
+    # mae = evaluate.load("mae")
+    # pearsonr = evaluate.load("pearsonr")
 
     predictions, labels = eval_pred
     return {"r_squared": r_squared.compute(predictions=predictions, references=labels)}

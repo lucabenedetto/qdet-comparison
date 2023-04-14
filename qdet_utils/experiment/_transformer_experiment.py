@@ -106,8 +106,8 @@ class TransformerExperiment(BaseExperiment):
         if pretrained_tokenizer is None:
             pretrained_tokenizer = pretrained_model
         self.tokenizer = AutoTokenizer.from_pretrained(pretrained_tokenizer)
-        # default loss for the regression model (num_labels=1) is MSELoss()
-        self.model = AutoModelForSequenceClassification.from_pretrained(pretrained_model, num_labels=1)
+        
+        self.model = AutoModelForSequenceClassification.from_pretrained(pretrained_model, num_labels=1)  # default loss for regression (num_labels=1) is MSELoss()
         # TODO possibly move the two lines below somewhere else
         self.tokenized_dataset = self.dataset.map(self._preprocess_function, batched=True, max_length=max_length, padding=True)
         self.data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
